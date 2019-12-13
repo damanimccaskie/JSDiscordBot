@@ -1,5 +1,5 @@
 {
-  "name": "Suicide Race",
+  "name": "SR Bot",
   "version": "1.0.0",
   "description": "Suicide Race's first Discord Bot",
   "main": "bot.js",
