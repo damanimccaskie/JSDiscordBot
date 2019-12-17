@@ -41,6 +41,42 @@ bot.on('message', function (user, userID, channelID, message, evt) {
                     message: 'Time To Die Motherfucker!'
                 });
             break;
+            //!suicide
+            case 'suicide':
+                bot.sendMessage({
+					to: channelID,
+					message: 'Life is worth living! Please contact: 1-800-273-8255 or visit https://suicidepreventionlifeline.org/ for help now!'
+			    });
+            break;
+            //!drive
+			case 'drive':
+			    bot.sendMessage({
+					to: channelID,
+					message: 'Link: https://drive.google.com/drive/folders/12f2grZf1lycx9Iz-dKbFtFbMLgsJHlUy'
+				});
+            break;
+            //!hello
+			case 'hello':
+			    bot.sendMessage({
+					to: channelID,
+					message: 'Hello! :)'
+				});
+            break;
+            //!life
+            case 'life':
+			    bot.sendMessage({
+					to: channelID,
+					message: 'Life Sucks And Then You Die!'
+				});
+            break;
+            case 'fact':
+			    bot.sendMessage({
+					to: channelID,
+					message: 'Did You Know? Vitamin C is the ONLY Water-Soluble Vitamin!'
+				});
+            break;
+            
          }
      }
 });
+
