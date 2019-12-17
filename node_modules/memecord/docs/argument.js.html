@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>argument.js - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Argument.html">Argument</a></li><li><a href="Client.html">Client</a><ul class='methods'><li data-type='method'><a href="Client.html#registerCommand">registerCommand</a></li><li data-type='method'><a href="Client.html#registerCommandsIn">registerCommandsIn</a></li><li data-type='method'><a href="Client.html#registerEvent">registerEvent</a></li><li data-type='method'><a href="Client.html#registerEventsIn">registerEventsIn</a></li><li data-type='method'><a href="Client.html#run">run</a></li><li data-type='method'><a href="Client.html#unregisterCommand">unregisterCommand</a></li></ul></li><li><a href="Command.html">Command</a></li><li><a href="Event.html">Event</a></li><li><a href="Logger.html">Logger</a><ul class='methods'><li data-type='method'><a href="Logger.html#log">log</a></li></ul></li><li><a href="Utils.html">Utils</a><ul class='methods'><li data-type='method'><a href="Utils.html#filterMentions">filterMentions</a></li><li data-type='method'><a href="Utils.html#isOwner">isOwner</a></li><li data-type='method'><a href="Utils.html#splitArguments">splitArguments</a></li></ul></li></ul><h3>Externals</h3><ul><li><a href="external-Client.html">Client</a></li><li><a href="external-Collection.html">Collection</a></li><li><a href="external-Discord.html">Discord</a></li><li><a href="external-Message.html">Message</a></li></ul><h3>Global</h3><ul><li><a href="global.html#CommandFunction">CommandFunction</a></li><li><a href="global.html#EventFunction">EventFunction</a></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">argument.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>const validators = {
+	boolean: require('../argumentValidators/boolean.js'),
+	channel: require('../argumentValidators/channel.js'),
+	number: require('../argumentValidators/number.js'),
+	role: require('../argumentValidators/role.js'),
+	string: require('../argumentValidators/string.js'),
+	user: require('../argumentValidators/user.js')
+};
+
+/**
+ * The Argument class allows you to create command arguments
+ *
+ * @example
+ * const memeNameArgument = new memecord.Argument({
+ *   type: 'string',
+ *   key: 'memeName',
+ *   label: 'Name',
+ *   infinite: true
+ * });
+ */
+class Argument {
+
+	/**
+	 * Creates a new argument
+	 * @param {object} options The argument options
+	 * @param {string} options.type The argument type
+	 * @param {string} options.key The key for the argument. This is the name you access the argument with in your command function
+	 * @param {string} options.label The argument label, used in the help command
+	 * @param {boolean} [options.optional=false] Wether the argument is optional
+	 * @param {boolean} [options.infinite=false] Wether the argument is infinite
+	 */
+	constructor({
+		type,
+		key,
+		label,
+		optional = false,
+		infinite = false
+	} = {}) {
+		if(typeof type !== 'string') throw new TypeError(`Argument types must be passed as a string, not ${typeof type}`);
+		if(typeof key !== 'string') throw new TypeError(`Argument keys must be passed as a string, not ${typeof type}`);
+		if(typeof label !== 'string') throw new TypeError(`Argument labels must be passed as a string, not ${typeof type}`);
+		if(typeof optional !== 'boolean') throw new TypeError(`Argument option "optional" must be passed as a boolean, not ${typeof optional}`);
+		if(typeof infinite !== 'boolean') throw new TypeError(`Argument option "infinite" must be passed as a boolean, not ${typeof infinite}`);
+
+		if(!validators[type]) throw new TypeError(`Argument type ${type} doesn't exist`);
+
+		this.type = type;
+		this.key = key;
+		this.label = label;
+		this.optional = optional;
+		this.infinite = infinite;
+	}
+
+	/**
+	 * Validates if the value is of the correct type
+	 * @private
+	 * @param {*} value The value to validate
+	 * @param {Client} client The client to use (for discord type parsing)
+	 * @returns {boolean} Wether the value is of the correct type
+	 */
+	validate(value, client) {
+		return validators[this.type].validate(value, client);
+	}
+
+	/**
+	 * Parses the value to the argument type
+	 * @private
+	 * @param {*} value The value to parse
+	 * @param {Client} client The client to use (for discord type parsing)
+	 * @returns {*} The parsed value
+	 */
+	parse(value, client) {
+		return validators[this.type].parse(value, client);
+	}
+
+}
+
+module.exports = Argument;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Fri May 12 2017 19:37:07 GMT+0200 (Mitteleuropäische Sommerzeit) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>

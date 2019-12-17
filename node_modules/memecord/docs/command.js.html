@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>command.js - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Argument.html">Argument</a></li><li><a href="Client.html">Client</a><ul class='methods'><li data-type='method'><a href="Client.html#registerCommand">registerCommand</a></li><li data-type='method'><a href="Client.html#registerCommandsIn">registerCommandsIn</a></li><li data-type='method'><a href="Client.html#registerEvent">registerEvent</a></li><li data-type='method'><a href="Client.html#registerEventsIn">registerEventsIn</a></li><li data-type='method'><a href="Client.html#run">run</a></li><li data-type='method'><a href="Client.html#unregisterCommand">unregisterCommand</a></li></ul></li><li><a href="Command.html">Command</a></li><li><a href="Event.html">Event</a></li><li><a href="Logger.html">Logger</a><ul class='methods'><li data-type='method'><a href="Logger.html#log">log</a></li></ul></li><li><a href="Utils.html">Utils</a><ul class='methods'><li data-type='method'><a href="Utils.html#filterMentions">filterMentions</a></li><li data-type='method'><a href="Utils.html#isOwner">isOwner</a></li><li data-type='method'><a href="Utils.html#splitArguments">splitArguments</a></li></ul></li></ul><h3>Externals</h3><ul><li><a href="external-Client.html">Client</a></li><li><a href="external-Collection.html">Collection</a></li><li><a href="external-Discord.html">Discord</a></li><li><a href="external-Message.html">Message</a></li></ul><h3>Global</h3><ul><li><a href="global.html#CommandFunction">CommandFunction</a></li><li><a href="global.html#EventFunction">EventFunction</a></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">command.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * The command class allows you to create commands, that are automatically triggered when they are used
+ *
+ * @example
+ * const memes = ['me too thanks', 'no u', 'is this thing on'];
+ * const memeNumber = new memecord.Argument({
+ *   type: 'number',
+ *   key: 'number',
+ *   label: 'Meme Nr.'
+ *  });
+ *
+ * const command = new memecord.Command({
+ *   names: ['meme', 'memes'],
+ *   description: 'Sends a meme',
+ *   run: function(message, args, argsString) {
+ *     const meme = memes[args.get('number')];
+ *     message.channel.send(meme || `error 404: meme #${args.get('number')} not found`);
+ *   },
+ *   args: [memeNumber],
+ *   cooldown: 1000
+ * });
+ *
+ * &lt;Client>.registerCommand(command);
+ */
+class Command {
+
+	/**
+	 * Creates a new command
+	 * @param {object} options The command options
+	 * @param {Array&lt;string>} options.names The command names
+	 * @param {string} options.description The command description
+	 * @param {CommandFunction} options.run The function to run
+	 * @param {Array&lt;Argument>} [options.args=[]] The command arguments
+	 * @param {number} [options.cooldown=0] The cooldown after each use in ms
+	 * @param {boolean} [options.ownerOnly=false] Wether the command can only be used by the bot owner(s)
+	 */
+	constructor({
+		names,
+		description,
+		run,
+		args = [],
+		cooldown = 0,
+		ownerOnly = false
+	} = {}) {
+		if(!Array.isArray(names)) throw new TypeError(`Command names must be passed as an array, not ${typeof names}`);
+		if(typeof description !== 'string') throw new TypeError(`Command descriptions must be passed as a string, not ${typeof description}`);
+		if(!Array.isArray(args)) throw new TypeError(`Command arguments must be passed as an array, not ${typeof args}`);
+		if(typeof run !== 'function') throw new TypeError(`Command functions must be passed as a function, not ${typeof run}`);
+		if(typeof cooldown !== 'number') throw new TypeError(`Command cooldowns must be passed as a number, not ${typeof cooldown}`);
+		if(typeof ownerOnly !== 'boolean') throw new TypeError(`Command option "ownerOnly" must be passed as a boolean, not ${typeof ownerOnly}`);
+
+		this.name = names[0].toLowerCase();
+		this.aliases = names.slice(1);
+		this.names = names;
+		this.description = description;
+		this.args = args;
+		this.run = run;
+		this.cooldown = cooldown;
+		this.ownerOnly = ownerOnly;
+	}
+
+
+	/**
+	 * Returns a command's usage string
+	 * @returns {string} The command's usage
+	 */
+	get usage() {
+
+		const args = [];
+
+		for(const argument of this.args) {
+
+			let tag = argument.label;
+
+			if(argument.infinite) tag = `${tag}...`;
+
+			args.push(argument.optional ? `[${tag}]` : `&lt;${tag}>`);
+
+		}
+
+		return args.join(' ');
+
+	}
+
+}
+
+module.exports = Command;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.4.3</a> on Fri May 12 2017 19:37:07 GMT+0200 (Mitteleuropäische Sommerzeit) using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>

@@ -4,6 +4,7 @@
   "description": "Suicide Race's first Discord Bot",
   "main": "bot.js",
   "author": "Damani McCaskie",
+  "permissions": 1277597760,
   "dependencies": {
     "discord.io": "https://github.com/woor/discord.io/tarball/gateway_v6",
     "winston": "^3.2.1"
