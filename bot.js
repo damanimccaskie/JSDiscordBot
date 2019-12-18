@@ -75,6 +75,12 @@ bot.on('message', function (user, userID, channelID, message, evt) {
 					message: 'Did You Know? Vitamin C is the ONLY Water-Soluble Vitamin!'
 				});
             break;
+	    case 'prize':
+                    bot.sendMessage({
+                    to: channelID,
+                    message: 'https://shorturl.at/wyzGH'
+              });	
+	    break;
             
          }
      }
