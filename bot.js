@@ -1,10 +1,10 @@
-const fs = require('fs') 
+const fs = require('fs')
 var Discord = require('discord.io');
 var logger = require('winston');
 var auth = require('./auth.json');
 
 const signal = '!';
-const version = "2019-12-19 0:57
+const version = "2019-12-19 0:57"
 // Configure logger settings
 logger.remove(logger.transports.Console);
 logger.add(new logger.transports.Console, {
@@ -34,14 +34,14 @@ function sendMsg(cId, msg) {
 
 function displayHelp(cId) {
 	//load command list from file (Command List) and display them
-	fs.readFile('Command List', 'utf-8', (err, data) => { 
+	fs.readFile('Command List', 'utf-8', (err, data) => {
     	if (err) {
 			console.log(err);
-			throw err; 
+			throw err;
 		}
 		sendMsg(cId, "Version: "+version);
 		sendMsg(cId, data.replace(/!/g, ""));
-	}); 
+	});
 }
 
 bot.on('message', function (user, userID, channelID, message, evt) {
@@ -50,7 +50,7 @@ bot.on('message', function (user, userID, channelID, message, evt) {
     if (message.substring(0, signal.length) === signal) {
 		//convert text to lowercase, to make command case insensitive
         var args = message.substring(signal.length).toLowerCase().split('Welcome To The Server My Niggah!');
-        var cmd = args[0]; 
+        var cmd = args[0];
 
         args = args.splice(signal.length);
         switch(cmd) {
@@ -96,4 +96,3 @@ bot.on('message', function (user, userID, channelID, message, evt) {
 		}
      }
 });
-
