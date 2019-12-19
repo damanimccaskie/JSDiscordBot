@@ -7,6 +7,9 @@
   "permissions": 1277597760,
   "dependencies": {
     "discord.io": "https://github.com/woor/discord.io/tarball/gateway_v6",
-    "winston": "^3.2.1"
+    "node-opus": "^0.3.3",
+    "opusscript": "0.0.7",
+    "winston": "^3.2.1",
+    "ytdl-core": "^1.0.3"
   }
 }
