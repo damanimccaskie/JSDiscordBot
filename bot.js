@@ -21,7 +21,7 @@ let bot = new Discord.Client({
    autorun: true
 });
 
-bot.on('ready', function (message, evt) { 
+bot.on('ready', function (message, evt) {
     logger.info('Connected');
     logger.info('Logged in as: ');
 	logger.info(bot.username + ' - (' + bot.id + ')');
@@ -55,7 +55,7 @@ bot.on('message', function (user, user_id, channelID, realMsg, message) {
 		//convert text to lowercase, to make command case insensitive
         var args = realMsg.substring(signal.length).toLowerCase().split(" ");
 		var cmd = args[0];
-		
+
         switch(cmd) {
             // !ping
             case 'ping':
@@ -101,7 +101,7 @@ bot.on('message', function (user, user_id, channelID, realMsg, message) {
 			case "pause":
 			case "skip":
 			case "stop":
-				music(channelID, message, cmd, args, user);
+				//music(channelID, message, cmd, args, user);
 				break;
 			default:
 				sendMsg(channelID, "Not sure I understand what it is you want...");
@@ -133,7 +133,7 @@ function music(c_id, msg, action, args, user) {
 		//console.log(msg);
 		//console.log(bot.users);
 
-		/*if (!user.voiceChannel) 
+		/*if (!user.voiceChannel)
 			sendMsg(c_id, "You need to be in the voice channel to have me play music");
 		else {*/
 			let server = servers[0];
@@ -148,7 +148,7 @@ function music(c_id, msg, action, args, user) {
 					sendMsg(c_id, "Programmers in get to this part yet srry...");//stop();
 				else if (action == "pause")
 					sendMsg(c_id, "Programmers in get to this part yet srry...");//pause();
-				else 
+				else
 					sendMsg(c_id, "Programmers in get to this part yet srry...");//skip();
 			})
 		//}
