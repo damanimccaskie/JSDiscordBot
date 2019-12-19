@@ -1,88 +1,95 @@
+const fs = require('fs') 
 var Discord = require('discord.io');
 var logger = require('winston');
 var auth = require('./auth.json');
+
+const signal = '!';
+
 // Configure logger settings
 logger.remove(logger.transports.Console);
 logger.add(new logger.transports.Console, {
     colorize: true
 });
 logger.level = 'debug';
+
 // Initialize Discord Bot
-var bot = new Discord.Client({
+let bot = new Discord.Client({
    token: auth.token,
    autorun: true
 });
+
 bot.on('ready', function (evt) {
     logger.info('Connected');
     logger.info('Logged in as: ');
     logger.info(bot.username + ' - (' + bot.id + ')');
 });
+
+
+function sendMsg(cId, msg) {
+	bot.sendMessage({
+		to: cId, //channel id
+		message: msg
+    });
+}
+
+function displayHelp(cId) {
+	//load command list from file (Command List) and display them
+	fs.readFile('Command List', 'utf-8', (err, data) => { 
+    	if (err) {
+			console.log(err);
+			throw err; 
+		}
+		sendMsg(cId, data);
+	}); 
+}
+
 bot.on('message', function (user, userID, channelID, message, evt) {
     // Our bot needs to know if it will execute a command
-    // It will listen for messages that will start with `!`
-    if (message.substring(0, 1) == '!') {
-        var args = message.substring(1).split('Welcome To The Server My Niggah!');
+    // It will listen for messages that will start with signal const (`!`)
+    if (message.substring(0, 1) == signal) {
+		//convert text to lowercase, to make command case insensitive
+        var args = message.substring(signal.length).toLowerCase().split('Welcome To The Server My Niggah!');
         var cmd = args[0];
 
-        args = args.splice(1);
+        args = args.splice(signal.length);
         switch(cmd) {
             // !ping
             case 'ping':
-                bot.sendMessage({
-                    to: channelID,
-                    message: 'Pong nigga!'
-                });
-            break;
+                sendMsg(channelID, "Pong nigga!");
+            	break;
             // Just add any case commands if you want to..
             // !time
             case 'time':
-                bot.sendMessage({
-                    to: channelID,
-                    message: 'Time To Die Motherfucker!'
-                });
-            break;
+				sendMsg(channelID, "Time To Die Motherfucker!");
+            	break;
             //!suicide
             case 'suicide':
-                bot.sendMessage({
-					to: channelID,
-					message: 'Life is worth living! Please contact: 1-800-273-8255 or visit https://suicidepreventionlifeline.org/ for help now!'
-			    });
-            break;
+                sendMsg(channelID, "Life is worth living! Please contact: 1-800-273-8255 or visit https://suicidepreventionlifeline.org/ for help now!");
+            	break;
             //!drive
 			case 'drive':
-			    bot.sendMessage({
-					to: channelID,
-					message: 'Link: https://drive.google.com/drive/folders/12f2grZf1lycx9Iz-dKbFtFbMLgsJHlUy'
-				});
-            break;
+				sendMsg(channelID, "Link: https://drive.google.com/drive/folders/12f2grZf1lycx9Iz-dKbFtFbMLgsJHlUy");
+	            break;
             //!hello
 			case 'hello':
-			    bot.sendMessage({
-					to: channelID,
-					message: 'Hello! :)'
-				});
-            break;
+				sendMsg(channelID, "Hello! :)");
+	            break;
             //!life
             case 'life':
-			    bot.sendMessage({
-					to: channelID,
-					message: 'Life Sucks And Then You Die!'
-				});
-            break;
+			    sendMsg(channelID, "Life Sucks And Then You Die!");
+	            break;
             case 'fact':
-			    bot.sendMessage({
-					to: channelID,
-					message: 'Did You Know? Vitamin C is the ONLY Water-Soluble Vitamin!'
-				});
-            break;
-	    case 'prize':
-                    bot.sendMessage({
-                    to: channelID,
-                    message: 'https://shorturl.at/wyzGH'
-              });	
-	    break;
-            
-         }
+			    sendMsg(channelID, "Did You Know? Vitamin C is the ONLY Water-Soluble Vitamin!");
+            	break;
+	   	 	case 'prize':
+        		sendMsg(channelID, "https://shorturl.at/wyzGH");
+	    		break;
+			case "help":
+				displayHelp(channelID);
+				break;
+			default:
+				sendMsg(channelID, "Not sure I understand what it is you want...");
+		}
      }
 });
 
