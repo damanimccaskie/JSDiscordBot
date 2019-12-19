@@ -4,7 +4,7 @@ var logger = require('winston');
 var auth = require('./auth.json');
 
 const signal = '!';
-
+const version = "2019-12-19 0:57
 // Configure logger settings
 logger.remove(logger.transports.Console);
 logger.add(new logger.transports.Console, {
@@ -39,17 +39,18 @@ function displayHelp(cId) {
 			console.log(err);
 			throw err; 
 		}
-		sendMsg(cId, data);
+		sendMsg(cId, "Version: "+version);
+		sendMsg(cId, data.replace(/!/g, ""));
 	}); 
 }
 
 bot.on('message', function (user, userID, channelID, message, evt) {
     // Our bot needs to know if it will execute a command
     // It will listen for messages that will start with signal const (`!`)
-    if (message.substring(0, 1) == signal) {
+    if (message.substring(0, signal.length) === signal) {
 		//convert text to lowercase, to make command case insensitive
         var args = message.substring(signal.length).toLowerCase().split('Welcome To The Server My Niggah!');
-        var cmd = args[0];
+        var cmd = args[0]; 
 
         args = args.splice(signal.length);
         switch(cmd) {
@@ -86,6 +87,9 @@ bot.on('message', function (user, userID, channelID, message, evt) {
 	    		break;
 			case "help":
 				displayHelp(channelID);
+				break;
+			case "clear": //this command may need the bot to be an admin
+				message.channel.bulkDelete(!arg[1] ? 100 : arg[1] > 100 || arg < 2 ? 2 : arg[1]); //complex :)
 				break;
 			default:
 				sendMsg(channelID, "Not sure I understand what it is you want...");
