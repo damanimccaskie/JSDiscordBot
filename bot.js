@@ -2,6 +2,7 @@ const fs = require('fs')
 var Discord = require('discord.io');
 var logger = require('winston');
 var auth = require('./auth.json');
+const main = require("./helperFunctions.js")
 
 let servers = {};
 
@@ -47,7 +48,7 @@ bot.on('message', function (user, user_id, channelID, realMsg, message) {
 		
 		//i always optimizing :)
 		if (bot.commands.has(cmd)) //if command exist in loaded commands, execute from list
-			bot.commands.get(cmd).execute(bot, channelID);
+			bot.commands.get(cmd).execute(bot, channelID, args);
 		else { //special case
 			found = false;
 			/*music = ["play", "pause", "skip", "stop"]; 
@@ -58,7 +59,7 @@ bot.on('message', function (user, user_id, channelID, realMsg, message) {
 				}
 			*/
 			if (!found)
-				sendMsg(channelID, "Not sure I understand what it is you want...");
+				main.sendMsg(bot, channelID, "Not sure I understand what it is you want...");
 		}
      }
 });

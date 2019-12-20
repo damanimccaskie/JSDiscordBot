@@ -1,15 +1,27 @@
 {
-  "name": "SR Bot",
+  "name": "SR_Bot",
   "version": "1.0.0",
   "description": "Suicide Race's first Discord Bot",
   "main": "bot.js",
   "author": "Damani McCaskie",
+  "contributors": [
+    {
+      "name": "Christopher King",
+      "email": "null"
+    }
+  ],
   "permissions": 1277597760,
   "dependencies": {
+    "cheerio": "^1.0.0-rc.3",
     "discord.io": "https://github.com/woor/discord.io/tarball/gateway_v6",
     "node-opus": "^0.3.3",
     "opusscript": "0.0.7",
+    "request": "^2.88.0",
     "winston": "^3.2.1",
     "ytdl-core": "^1.0.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/TheNotoriousMac/DiscordBot"
   }
 }
