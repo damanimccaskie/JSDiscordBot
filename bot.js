@@ -4,6 +4,7 @@ var logger = require('winston');
 var auth = require('./auth.json');
 const main = require("./helperFunctions.js")
 
+
 let servers = {};
 
 const ytdl = require("ytdl-core");
