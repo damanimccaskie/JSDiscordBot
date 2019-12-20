@@ -4,7 +4,7 @@ module.exports = {
     execute(bot, channelId) {
         main = require("../helperFunctions.js"); 
         const fs = require('fs');
-        const version = "2019-12-20 2:57"
+        const version = "2019-12-20 7:33"
 
         function displayHelp(cId, bot) {
             //load command list from file (Command List) and display them
