@@ -1,12 +1,15 @@
 !life
 !fact
-!suicide
+!suicide - gives suicide hotline info
 !hello
-!drive
+!drive - link to Suicide Race Drive
 !time
 !ping
-!prize
-!help
+!prize - special video
+!help - gives list of commands
 !clear
 !image - generate random image
 !meme - generate random meme
+!lenny - lenny face ( ͡° ͜ʖ ͡°)
+!fortune - ask the bot for your fortune
+!flipcoin

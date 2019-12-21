@@ -14,8 +14,6 @@ module.exports = {
             .setTitle(`From /r/${random}`)
             .setURL(`https://reddit.com/r/${random}`);
             main.sendMsg(bot, channelID, img);
-            //the statement below will do pretty much the same as above...you choose
-            //main.sendMsg(bot, channelID, embed.image["url"]);
         });
     }
         
