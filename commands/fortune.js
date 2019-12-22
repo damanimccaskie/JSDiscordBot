@@ -28,7 +28,7 @@ module.exports = {
             "Very doubtful.",
         ];  
         
-        
+        //this doesnt need to be a promise
         await main.sendMsg(bot, channelID, fortunes[Math.floor(Math.random()*fortunes.length)]); 
   }
 }    
