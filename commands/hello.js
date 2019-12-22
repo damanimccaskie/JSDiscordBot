@@ -1,8 +1,8 @@
 module.exports = {
     name: "hello",
     description: "hello command",
-    execute(bot, channelId) {
+    execute(channel) {
         main = require("../helperFunctions.js")
-        main.sendMsg(bot, channelId, "Hello! :)");
+        main.post(channel, "Hello! :)");
     } 
 }

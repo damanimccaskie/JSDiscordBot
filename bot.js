@@ -1,5 +1,5 @@
 const fs = require('fs')
-var Discord = require('discord.io');
+var Discord = require('discord.js');
 var logger = require('winston');
 var auth = require('./auth.json');
 const main = require("./helperFunctions.js")
@@ -18,10 +18,12 @@ logger.add(new logger.transports.Console, {
 logger.level = 'debug';
 
 // Initialize Discord Bot
-let bot = new Discord.Client({
+let bot = new Discord.Client();
+/*{
    token: auth.token,
    autorun: true
-});
+}*/
+bot.login(auth.token);
 
 //dynamically load commands (js command files)
 bot.commands = new Map();
@@ -38,10 +40,13 @@ bot.on('ready', function (message, evt) {
 	//console.log(message);
 });
 
-bot.on('message', function (user, user_id, channelID, realMsg, message) {
+bot.on('message', function (message) {//, user_id, channelID, realMsg, message) {
     // Our bot needs to know if it will execute a command
 	// It will listen for messages that will start with signal const (`!`)
-	if (message.d.author.username === "SR Bot") return; //ignore messages from self
+	if (message.author.username === "SR Bot") return; //ignore messages from self
+	let realMsg = message.content;
+	let channelID = message.channel.id;
+	let channel = message.channel;
     if (realMsg.substring(0, signal.length) === signal) {
 		//convert text to lowercase, to make command case insensitive
         var args = realMsg.substring(signal.length).toLowerCase().split(" ");
@@ -49,7 +54,7 @@ bot.on('message', function (user, user_id, channelID, realMsg, message) {
 		
 		//i always optimizing :)
 		if (bot.commands.has(cmd)) //if command exist in loaded commands, execute from list
-			bot.commands.get(cmd).execute(bot, channelID, args);
+			bot.commands.get(cmd).execute(channel, args, message);
 		else { //special case
 			found = false;
 			/*music = ["play", "pause", "skip", "stop"]; 
@@ -60,7 +65,7 @@ bot.on('message', function (user, user_id, channelID, realMsg, message) {
 				}
 			*/
 			if (!found)
-				main.sendMsg(bot, channelID, "Not sure I understand what it is you want...");
+				main.post(channel, "Not sure I understand what it is you want...");
 		}
      }
 });

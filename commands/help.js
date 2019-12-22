@@ -1,22 +1,22 @@
 module.exports = {
     name: "help",
     description: "help command",
-    execute(bot, channelId) {
+    execute(channel) {
         main = require("../helperFunctions.js"); 
         const fs = require('fs');
-        const version = "2019-12-21 9:58"
+        const version = "2019-12-22 4:27"
 
-        function displayHelp(cId, bot) {
+        function displayHelp() {
             //load command list from file (Command List) and display them
             fs.readFile('Command List', 'utf-8', (err, data) => {
                 if (err) {
                     console.log(err);
                     throw err;
                 }
-                main.sendMsg(bot, cId, "Version: "+version);
-                main.sendMsg(bot, cId, data.replace(/!/g, ""));
+                main.post(channel, "Version: "+version);
+                main.post(channel, data.replace(/!/g, ""));
             });
         }
-        displayHelp(channelId, bot);
+        displayHelp(channel);
     } 
 }

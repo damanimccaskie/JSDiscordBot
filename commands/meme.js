@@ -3,7 +3,7 @@ const randomPuppy = require("random-puppy");
 module.exports = {
     name: "meme",
     description: "meme command",
-    execute: async (bot, channelID, msg, args) => {
+    execute: async (channel, args) => {
         const subReddits = ["dankmeme", "meme", "me_irl"];
         const random = subReddits[Math.floor(Math.random() * subReddits.length)];
         const main = require("../helperFunctions.js");
@@ -13,7 +13,7 @@ module.exports = {
             .setImage(img)
             .setTitle(`From /r/${random}`)
             .setURL(`https://reddit.com/r/${random}`);
-            main.sendMsg(bot, channelID, img);
+            main.post(channel, embed);
         });
     }
         

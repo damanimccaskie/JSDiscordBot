@@ -1,9 +1,9 @@
 module.exports = {
     name: "prize",
     description: "prize command",
-    execute(bot, channelId) {
+    execute(channel) {
         main = require("../helperFunctions.js")
-        main.sendMsg(bot, channelId, "https://shorturl.at/wyzGH");
+        main.post(channel, "https://shorturl.at/wyzGH");
     } 
 }
 

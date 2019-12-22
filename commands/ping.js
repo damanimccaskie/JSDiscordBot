@@ -1,8 +1,8 @@
 module.exports = {
     name: "ping",
     description: "ping command",
-    execute(bot, channelId) {
+    execute(channel) {
         main = require("../helperFunctions.js")
-        main.sendMsg(bot, channelId, "Pong nigga!")
+        main.post(channel, "Pong nigga!")
     } 
 }

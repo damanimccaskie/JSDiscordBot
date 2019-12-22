@@ -1,8 +1,8 @@
 module.exports = {
     name: "drive",
     description: "drive command",
-    execute(bot, channelId) {
+    execute(channel) {
         main = require("../helperFunctions.js")
-        main.sendMsg(bot, channelId, "Link: https://drive.google.com/drive/folders/12f2grZf1lycx9Iz-dKbFtFbMLgsJHlUy");
+        main.post(channel, "Link: https://drive.google.com/drive/folders/12f2grZf1lycx9Iz-dKbFtFbMLgsJHlUy");
     } 
 }

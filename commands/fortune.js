@@ -1,7 +1,7 @@
 module.exports = {
     name: "fortune",
     description: "fortune command",
-    execute: async (bot, channelID, msg, args) => {
+    execute: async (channel) => {
         main = require("../helperFunctions.js")
         //if (args.length == 0) return main.sendMsg(bot, channelID, "Finding out a fortune for nothing, great.").then(msg => msg.delete(2300)); 
 
@@ -29,6 +29,6 @@ module.exports = {
         ];  
         
         //this doesnt need to be a promise
-        await main.sendMsg(bot, channelID, fortunes[Math.floor(Math.random()*fortunes.length)]); 
+        await main.post(channel, fortunes[Math.floor(Math.random()*fortunes.length)]); 
   }
 }    

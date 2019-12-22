@@ -1,10 +1,10 @@
 module.exports = {
     name: "flipcoin",
     description: "flipcoin command",
-    execute: async (bot, channelID) => {
+    execute: async (channel) => {
         main = require("../helperFunctions.js")
         let output = ["HEADS", "TAILS"];
 
-        await main.sendMsg(bot, channelID,output[Math.floor(Math.random()*output.length)] );
+        await main.post(channel, output[Math.floor(Math.random()*output.length)] );
     }
 }

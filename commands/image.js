@@ -1,7 +1,7 @@
 module.exports = {
     name: "image",
     description: "image command",
-    execute(bot, channelId, args) {
+    execute(channel, args) {
         const main = require("../helperFunctions.js");
         const cheerio = require("cheerio");
         const request = require("request");
@@ -42,13 +42,13 @@ module.exports = {
             let urls = new Array(links.length).fill(0).map((v, i) => links.eq(i).attr("href"));
 
             if (urls.length < 1) {
-                main.sendMsg(bot, channelId, "Couldn't find any images that match that description... srry");
+                main.post(channel, "Couldn't find any images that match that description... srry");
                 console.log("No results");
                 return;
             }
 
             //post image to chat
-            main.sendMsg(bot, channelId, urls[Math.floor(Math.random() * urls.length)]);
+            main.post(channel, urls[Math.floor(Math.random() * urls.length)]);
         });
     } 
 }
