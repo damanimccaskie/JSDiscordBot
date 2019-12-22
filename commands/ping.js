@@ -3,6 +3,6 @@ module.exports = {
     description: "ping command",
     execute(bot, channelId) {
         main = require("../helperFunctions.js")
-        main.sendMsg(bot, channelId, "Pong nigga!");
+        main.sendMsg(bot, channelId, "Pong nigga!")
     } 
 }
