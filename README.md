@@ -5,28 +5,32 @@ Bot Used Exclusively For The Suicide Race Discord Server For Now!
 
 
 ## General Commands
-!life - choose life
-!fact
-!suicide - gives suicide hotline info
-!hello
-!drive - link to Suicide Race Drive
-!time - you'll see :)
-!ping - reply pong...
-!prize - special video
-!help - gives list of commands
-!clear - not working...:(
-!image - generate random image
-!meme - generate random meme
-!lenny - lenny face ( ͡° ͜ʖ ͡°)
-!fortune - ask the bot for your fortune
-!flipcoin - quick heads or tails
-!fliptext - reverse and flip text
-!zalgo
-!slap - slap a user in the channel
+<ul>
+<li>!life - choose life</li>
+<li>!fact</li>
+<li>!suicide - gives suicide hotline info</li>
+<li>!hello</li>
+<li>!drive - link to Suicide Race Drive</li>
+<li>!time - you'll see :)</li>
+<li>!ping - reply pong...</li>
+<li>!prize - special video</li>
+<li>!help - gives list of commands</li>
+<li>!clear - not working...:(</li>
+<li>!image - generate random image</li>
+<li>!meme - generate random meme</li>
+<li>!lenny - lenny face ( ͡° ͜ʖ ͡°)</li>
+<li>!fortune - ask the bot for your fortune</li>
+<li>!flipcoin - quick heads or tails</li>
+<li>!fliptext - reverse and flip text</li>
+<li>!zalgo</li>
+<li>!slap - slap a user in the channel</li>
+</ul>
 
 
 ## Music Commands
-!play [arg] - arg can be a youtube link / id or a query (query not implemented yet)
-!stop - stop currently playing music
-!skip - go to next song in list (if avaliable)
-!next - see skip
+<ul>
+<li>!play [arg] - arg can be a youtube link / id or a query (query not implemented yet)</li>
+<li>!stop - stop currently playing music</li>
+<li>!skip - go to next song in list (if avaliable)</li>
+<li>!next - see skip</li>
+</ul>
