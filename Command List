@@ -1,3 +1,6 @@
+==========================================
+General Commands
+----------------
 !life - choose life
 !fact
 !suicide - gives suicide hotline info
@@ -16,3 +19,12 @@
 !fliptext - reverse and flip text
 !zalgo
 !slap - slap a user in the channel
+==========================================
+
+Music Commands
+--------------
+!play [arg] - arg can be a youtube link / id or a query (query not implemented yet)
+!stop - stop currently playing music
+!skip - go to next song in list (if avaliable)
+!next - see skip
+==========================================
