@@ -50,7 +50,6 @@ bot.on('message', function (message) {//, user_id, channelID, realMsg, message) 
         var args = realMsg.substring(signal.length).split(" "); //TODO parse args better
 		var cmd = args[0].toLowerCase();
 		
-		//i always optimizing :)
 		if (bot.commands.has(cmd)) //if command exist in loaded commands, execute from list
 			bot.commands.get(cmd).execute(channel, args, message);
 		else { //special case

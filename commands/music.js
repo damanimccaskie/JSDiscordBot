@@ -45,8 +45,14 @@ module.exports = {
             if (action == 'play') {
                 if (!args[0])
                     main.post(channel, "Kinda need a lil more info than that...");
-                else 
-                    createRecord(args[0], server); //unfortunately can only parse 1 link at a time (currently)
+                else {
+                    if (ytdl.validateURL(args[0]))
+                        createRecord(args[0], server); //unfortunately can only parse 1 link at a time (currently)
+                    else {
+                        //assume a search query
+                        main.post(channel, "Sorry cant search at the moment");
+                    }
+                }
             } else if (action === "stop")
                 stop(server);
             else if (action == "pause")
