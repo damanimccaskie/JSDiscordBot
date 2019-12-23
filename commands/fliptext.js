@@ -11,6 +11,6 @@ module.exports = {
   
       for(i = 0; i < args.length; i++)
         flipped.push(flip(args[i]));
-      main.sendMsg(bot,channelID,flipped.join(" "));
+      main.post(bot,channelID,flipped.join(" "));
  }
 }
