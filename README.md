@@ -24,6 +24,9 @@ Bot Used Exclusively For The Suicide Race Discord Server For Now!
 <li>!fliptext - reverse and flip text</li>
 <li>!zalgo</li>
 <li>!slap - slap a user in the channel</li>
+<li>!calc - calculate an expression</li>
+<li>!space</li>
+<li>!sigh</li>
 </ul>
 
 
@@ -33,4 +36,5 @@ Bot Used Exclusively For The Suicide Race Discord Server For Now!
 <li>!stop - stop currently playing music</li>
 <li>!skip - go to next song in list (if avaliable)</li>
 <li>!next - see skip</li>
+<li>queue - view items in queue</li>
 </ul>

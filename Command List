@@ -20,6 +20,8 @@ General Commands
 !zalgo
 !slap - slap a user in the channel
 !calc - calculate an expression
+!space
+!sigh
 ==========================================
 
 Music Commands
@@ -28,4 +30,5 @@ Music Commands
 !stop - stop currently playing music
 !skip - go to next song in list (if avaliable)
 !next - see skip
+!queue - view items in queue
 ==========================================

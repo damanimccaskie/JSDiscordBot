@@ -33,27 +33,22 @@ module.exports = {
                     main.post(channel, "Kinda need a lil more info than that...");
                 else if (args.length > 2) {
                     //check for if person trying to search for a song
-                } else
-                    server.queue.push(args[1]); //add link to queue
+                } else 
+                    createRecord(args[1], server);
             } else if (action === "stop")
                 stop(server);
             else if (action == "pause")
                 main.post(channel, "Programmers in get to this part yet srry...");// not sure we will either
-            else
-                skip(server); //at this point it could only else be skip || next
-
-            //Get bot to join voice channel
-            if (!active) all.member.voiceChannel.join().then(function(connection) {
-                active = true;
-                if (action === "play")
-                    play(connection, server);    
-            });
+            else if (action === "skip" || action === "next")
+                skip(server);
+            else 
+                viewQueue(server.queue);
         }
 
         function play(connection, server) {
-            link = server.queue[0];
+            let item = server.queue[0];
             //link.split("?")[1].substring(2) //if ya choose to pass as simply an id
-            stream = ytdl(link, {filter: "audioonly"});
+            stream = ytdl(item.id, {filter: "audioonly"});
             server.dispatcher = connection.playStream(stream, { seek: 0, volume: 1 });
         
             server.queue.shift(); //play and drop off queue(^^)
@@ -80,6 +75,32 @@ module.exports = {
             //ending currently playing song will effectively skip to next (if there is a next)
             if(server.dispatcher) 
                 server.dispatcher.end(); 
+        }
+
+        function viewQueue(list) {
+            l = "";
+            list.forEach(item => l+= item.title + "\n");
+            main.post(channel, l);
+        }
+
+        function createRecord(link, server) {
+            //create struct to contain link, and vid info
+            ytdl.getInfo(link, (err, info) => {
+                vid = {"thumbnail": info.player_response.videoDetails.thumbnail,
+                "id": info.video_id, 
+                "url": info.video_url,
+                "length": info.length_seconds,
+                "title": info.title};
+
+                server.queue.push(vid);
+
+                //Get bot to join voice channel
+                if (!active) all.member.voiceChannel.join().then(function(connection) {
+                    active = true;
+                    if (action === "play")
+                        play(connection, server);    
+                });
+            });
         }
         
     } 

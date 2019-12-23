@@ -12,6 +12,7 @@ module.exports = {
 
     if (!isNaN(args[0])) {
         amount = parseInt(args[0]);
+        //cool if statement
         (amount < 1) && (amount = 1);
         (amount > 15) && (amount = 15);
         args = args.slice(1);
