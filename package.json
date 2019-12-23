@@ -26,6 +26,7 @@
     "opusscript": "0.0.7",
     "random-puppy": "^1.1.0",
     "request": "^2.88.0",
+    "simple-youtube-api": "^5.2.1",
     "to-zalgo": "^1.0.1",
     "winston": "^3.2.1",
     "ytdl-core": "^1.0.3"
