@@ -4,9 +4,7 @@ The Discord Bot
 Bot Used Exclusively For The Suicide Race Discord Server For Now!
 
 
-==========================================
-##General Commands
-----------------
+## General Commands
 !life - choose life
 !fact
 !suicide - gives suicide hotline info
@@ -27,10 +25,8 @@ Bot Used Exclusively For The Suicide Race Discord Server For Now!
 !slap - slap a user in the channel
 
 
-##Music Commands
---------------
+## Music Commands
 !play [arg] - arg can be a youtube link / id or a query (query not implemented yet)
 !stop - stop currently playing music
 !skip - go to next song in list (if avaliable)
 !next - see skip
-==========================================
