@@ -16,6 +16,7 @@
     "discord-meme-generator": "^1.0.6",
     "discord.io": "https://github.com/woor/discord.io/tarball/gateway_v6",
     "discord.js": "^11.5.1",
+    "ffmpeg": "0.0.4",
     "flip-text": "^1.1.0",
     "fs": "0.0.1-security",
     "jimp": "^0.9.3",
