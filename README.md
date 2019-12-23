@@ -37,4 +37,5 @@ Bot Used Exclusively For The Suicide Race Discord Server For Now!
 <li>!skip - go to next song in list (if avaliable)</li>
 <li>!next - see skip</li>
 <li>queue - view items in queue</li>
+<li>back - go to previous song</li>
 </ul>

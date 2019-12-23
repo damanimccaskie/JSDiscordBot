@@ -31,4 +31,5 @@ Music Commands
 !skip - go to next song in list (if avaliable)
 !next - see skip
 !queue - view items in queue
+!back - go to previous song
 ==========================================

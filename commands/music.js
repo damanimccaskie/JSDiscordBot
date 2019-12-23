@@ -2,14 +2,24 @@ var servers = {};
 var active = false;
 var stream;
 
-const max = 250;
-
 module.exports = {
     name: "music",
     description: "music command",
     execute(channel, args, all) {
         let main = require("../helperFunctions.js")
-        action = args[0].toLowerCase();
+
+        if (args.length < 1){
+            //main.post(channel, "Error?");
+            return;
+        }
+
+        action = args.shift().toLowerCase();
+
+        if (!action) {
+            //main.post(channel, "Error?");
+            return;
+        }
+
         if (action === "music") {
             main.post(channel, "Slightly confused"); 
             return;
@@ -19,7 +29,6 @@ module.exports = {
         if (!servers[all.guild.id]) servers[all.guild.id] = {
             queue: [],
             cur: 0,
-            filled: 0
         }; //create a queue for this server if it does not exist*/
         
         if (!all.member.voiceChannel)
@@ -34,12 +43,10 @@ module.exports = {
                      add command to clear queue
             */
             if (action == 'play') {
-                if (!args[1])
+                if (!args[0])
                     main.post(channel, "Kinda need a lil more info than that...");
-                else if (args.length > 2) {
-                    //check for if person trying to search for a song
-                } else 
-                    createRecord(args[1], server);
+                else 
+                    createRecord(args[0], server); //unfortunately can only parse 1 link at a time (currently)
             } else if (action === "stop")
                 stop(server);
             else if (action == "pause")
@@ -47,8 +54,10 @@ module.exports = {
             else if (action === "skip" || action === "next")
                 skip(server);
             else if (action === "queue")
-                viewQueue(server.queue);
-            else;// back();
+                viewQueue(server);
+            else if (action === "back")
+                back(server);
+            else;
         }
 
         function play(connection, server) {
@@ -59,7 +68,7 @@ module.exports = {
 
             server.dispatcher.on("end", function() {
                 if (server.queue[server.cur+1]) { //if items left in queue
-                    evalQueue(2, server); //increment to point to next item
+                    server.cur++; //increment to point to next item
                     play(connection, server);
                 } else {
                     active = false;
@@ -73,19 +82,38 @@ module.exports = {
                 resetQueue(server);
                 //if i end the currently playing song and the queue empty...
                 server.dispatcher.end(); 
+                main.post(channel, "Stopping all songs");
             }
         }
 
         function skip(server) {
             //ending currently playing song will effectively skip to next (if there is a next)
-            if(server.dispatcher)
-                server.dispatcher.end(); 
+            if(server.dispatcher) {
+                server.dispatcher.end();
+                main.post(channel, "Skipping song");
+            }
         }
 
-        function viewQueue(list) {
+        function back(server) {
+            if (server.dispatcher) {
+                //need to do this twice to achieve back motion
+                server.cur -= 2;
+                server.dispatcher.end();
+                main.post(channel, "Going to previous song");
+            }
+        }
+
+        function viewQueue(server) {
             l = "";
-            list.forEach(item => l+= item.title + "\n");
-            main.post(channel, l);
+            if (!server.queue || server.queue.length < 1)
+                main.post(channel, "Queue is empty");
+            else {
+                for(i = 0; i < server.queue.length; i++)
+                    if (i == server.cur)
+                        l += "+ "+ server.queue[i].title + " +\n";
+                    else l += server.queue[i].title + "\n";
+                main.post(channel, l);
+            }
         }
 
         function resetQueue(server) {
@@ -96,46 +124,23 @@ module.exports = {
             }
         }
 
-        function evalQueue(action, server) {
-            switch(action) {
-                case 1: //add
-                    server.filled++;
-                    if (server.filled >= max) {
-                        server.queue.shift();
-                        if (server.cur > 0)
-                            server.cur--;
-                        server.filled--; 
-                    }
-                    break;
-                case 2: //next
-                    if (server.cur+1 >= server.filled)
-                        resetQueue(server);
-                    else server.cur++;
-                    break;
-                case 3: //back
-                    if (server.cur-1 > -1)
-                        server.cur--;
-                    break;
-            }
-        }
-
         function createRecord(link, server) {
             //create struct to contain link, and vid info
             ytdl.getInfo(link, (err, info) => {
-                vid = {"thumbnail": info.player_response.videoDetails.thumbnail,
-                "id": info.video_id, 
-                "url": info.video_url,
-                "length": info.length_seconds,
-                "title": info.title};
+                vid = {
+                    "thumbnail": info.player_response.videoDetails.thumbnail,
+                    "id": info.video_id, 
+                    "url": info.video_url,
+                    "length": info.length_seconds,
+                    "title": info.title
+                }
 
                 server.queue.push(vid);
-                evalQueue(1, server);
-
+                
                 //Get bot to join voice channel
                 if (!active) all.member.voiceChannel.join().then(function(connection) {
                     active = true;
-                    if (action === "play")
-                        play(connection, server);    
+                    play(connection, server);    
                 });
             });
         }

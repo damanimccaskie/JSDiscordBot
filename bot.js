@@ -55,7 +55,7 @@ bot.on('message', function (message) {//, user_id, channelID, realMsg, message) 
 			bot.commands.get(cmd).execute(channel, args, message);
 		else { //special case
 			found = false;
-			music = ["play", "pause", "skip", "stop", "next", "queue"]; 
+			music = ["play", "pause", "skip", "stop", "next", "queue", "back"]; 
 			for (i = 0; i < music.length; i++)
 				if (cmd === music[i]) {
 					found = true;
