@@ -42,9 +42,19 @@ module.exports = {
                 if (!args[0])
                     main.post(channel, "Kinda need a lil more info than that...");
                 else {
-                    if (ytdl.validateURL(args[0]))
-                        createRecord(args[0], server); //unfortunately can only parse 1 link at a time (currently)
-                    else search(args.join("+"), server); //assume a search query
+                    (async function() {
+                        if (ytdl.validateURL(args[0]))
+                            addToQueue(await createRecord(args[0], server), server); //unfortunately can only parse 1 link at a time (currently)
+                        else await search(args.join("+"), server, all); //assume a search query
+                        
+                        if (server.queue.length > 0) {
+                            //Get bot to join voice channel
+                            if (!active) all.member.voiceChannel.join().then(function(connection) {
+                                active = true;
+                                play(connection, server);    
+                            });
+                        }
+                    }());
                 }
             } else if (action === "stop")
                 stop(server);
@@ -115,35 +125,78 @@ module.exports = {
             }
         }
 
-        function search(query, server) {
+        async function search(query, server, msg) {
+            main.post(channel, "Searching");
+
+            let urls = await getSearchResults(query);
+
+            if (urls.length < 1) {
+                main.post(channel, "Didn't find any results from that search sorry");
+                console.log("No results");
+                return;
+            }
+
+            let vids = [];
+            for (i = 0; i < 5; i++)
+                if (i >= urls.length)
+                    break;
+                else vids.push(await createRecord(urls[i].split("=")[1], server));
+            
+            const { RichEmbed } = require("discord.js");
+            const embed = new RichEmbed().setColor("#e9f931")
+            .setTitle("Choose a song by entering a number");
+
+            
+            for (i = 0; i < vids.length; i++)
+                embed.addField("Song "+(i+1).toString(), vids[i].title);
+            embed.addField("Exit", "exit");
+
+            let choose;
+            main.post(channel, embed);
+
+            try {
+                let response = await msg.channel.awaitMessages(
+                    m => (m.content > 0 && m.content < vids.length) || m.content === 'exit',
+                    {
+                        max: 1,
+                        maxProcessed: 1,
+                        time: 30000, //wait 30 secs
+                        errors: ["time"]
+                    } 
+                );
+                choose = parseInt(response.first().content);
+            } catch (e) {
+                console.log(e);
+            }
+
+            if (choose > 0 && choose < vids.length + 1)
+                addToQueue(vids[choose-1], server);
+        }
+
+        function addToQueue(vid, server) {
+            main.post(channel, "Adding "+vid.title+" to queue");
+            server.queue.push(vid);
+        }
+
+        async function getSearchResults(query) {
             const cheerio = require("cheerio");
             const phantom = require('phantom');
             
-            main.post(channel, "Searching");
+            const instance = await phantom.create();
+            const page = await instance.createPage()
 
-            (async function() {
-                const instance = await phantom.create();
-                const page = await instance.createPage()
+            await page.open("https://www.youtube.com/results?search_query=" + query);
+            const content = await page.property('content');
 
-                const status = await page.open("https://www.youtube.com/results?search_query=" + query);
-                const content = await page.property('content');
-                //parse page
-                dom = cheerio.load(content);
+            //parse page
+            dom = cheerio.load(content);
                 
-                let regex = RegExp("/watch[?]v=.+");
-                let links = dom("a.yt-uix-tile-link.yt-ui-ellipsis.yt-ui-ellipsis-2.yt-uix-sessionlink.spf-link"); //parse out results
-                let urls = new Array(links.length).fill(0).map((v, i) => links.eq(i).attr("href")).filter(link => regex.test(link));
+            let regex = RegExp("/watch[?]v=.+");
+            let links = dom("a.yt-uix-tile-link.yt-ui-ellipsis.yt-ui-ellipsis-2.yt-uix-sessionlink.spf-link"); //parse out results
+            let urls = new Array(links.length).fill(0).map((v, i) => links.eq(i).attr("href")).filter(link => regex.test(link) && !link.includes("list"));
     
-                if (urls.length < 1) {
-                    main.post(channel, "Didn't find any results from that search sorry");
-                    console.log("No results");
-                    return;
-                }
-    
-                createRecord(urls[0].split("=")[1], server);
-
-                await instance.exit();
-            }());
+            await instance.exit();
+            return urls;
         }
 
         function resetQueue(server) {
@@ -154,26 +207,18 @@ module.exports = {
             }
         }
 
-        function createRecord(link, server) {
+        async function createRecord(link, server) {
             //create struct to contain link, and vid info
-            ytdl.getInfo(link, (err, info) => {
-                vid = {
-                    "thumbnail": info.player_response.videoDetails.thumbnail,
-                    "id": info.video_id, 
-                    "url": info.video_url,
-                    "length": info.length_seconds,
-                    "title": info.title
-                }
+            info = await ytdl.getInfo(link);
+            vid = {
+                "thumbnail": info.player_response.videoDetails.thumbnail,
+                "id": info.video_id, 
+                "url": info.video_url,
+                "length": info.length_seconds,
+                "title": info.title
+            };
 
-                server.queue.push(vid);
-                main.post(channel, "Adding "+vid.title+" to queue");
-                
-                //Get bot to join voice channel
-                if (!active) all.member.voiceChannel.join().then(function(connection) {
-                    active = true;
-                    play(connection, server);    
-                });
-            });
+            return vid;
         }
         
     } 
