@@ -4,10 +4,6 @@ var logger = require('winston');
 var auth = require('./auth.json');
 const main = require("./helperFunctions.js")
 
-
-let servers = {};
-
-const ytdl = require("ytdl-core");
 const signal = '!';
 
 // Configure logger settings
@@ -47,7 +43,7 @@ bot.on('message', function (message) {//, user_id, channelID, realMsg, message) 
 	let channel = message.channel;
     if (realMsg.substring(0, signal.length) === signal) {
 		//convert text to lowercase, to make command case insensitive
-        var args = realMsg.substring(signal.length).split(" "); //TODO parse args better
+        var args = main.cleanArgs(realMsg.substring(signal.length).split(" "));
 		var cmd = args[0].toLowerCase();
 		
 		if (bot.commands.has(cmd)) //if command exist in loaded commands, execute from list

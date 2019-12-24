@@ -43,8 +43,10 @@ module.exports = {
                     main.post(channel, "Kinda need a lil more info than that...");
                 else {
                     (async function() {
-                        if (ytdl.validateURL(args[0]))
-                            addToQueue(await createRecord(args[0], server), server); //unfortunately can only parse 1 link at a time (currently)
+                        if (ytdl.validateURL(args[0])) //if first arg is a link assume all other are links
+                            for(let i = 0; i < args.length; i++)
+                                if (ytdl.validateURL(args[i])) //still validate tho
+                                    addToQueue(await createRecord(args[i]), server);
                         else await search(args.join("+"), server, all); //assume a search query
                         
                         if (server.queue.length > 0) {
@@ -74,6 +76,7 @@ module.exports = {
             //link.split("?")[1].substring(2) //if ya choose to pass as simply an id
             stream = ytdl(item.id, {filter: "audioonly"});
             server.dispatcher = connection.playStream(stream, { seek: 0, volume: 1 });
+            main.post(channel, "Playing "+item.title);
 
             server.dispatcher.on("end", function() {
                 if (server.queue[server.cur+1]) { //if items left in queue
@@ -117,10 +120,10 @@ module.exports = {
             if (!server.queue || server.queue.length < 1)
                 main.post(channel, "Queue is empty");
             else {
-                for(i = 0; i < server.queue.length; i++)
-                    if (i == server.cur)
-                        l += "+ "+ server.queue[i].title + " +\n";
-                    else l += server.queue[i].title + "\n";
+                for(let j = 0; j < server.queue.length; j++)
+                    if (j == server.cur)
+                        l += "+ "+ server.queue[j].title + " +\n";
+                    else l += server.queue[j].title + "\n";
                 main.post(channel, l);
             }
         }
@@ -137,18 +140,22 @@ module.exports = {
             }
 
             let vids = [];
-            for (i = 0; i < 5; i++)
-                if (i >= urls.length)
+            for (let j = 0; j < urls.length; j++) {
+                let id = urls[j].split("=")[1];
+                if (!ytdl.validateID(id))
+                    continue;
+                vids.push(await createRecord(id, server));
+                if (vids.length >= 5)
                     break;
-                else vids.push(await createRecord(urls[i].split("=")[1], server));
+            }
             
             const { RichEmbed } = require("discord.js");
             const embed = new RichEmbed().setColor("#e9f931")
             .setTitle("Choose a song by entering a number");
 
             
-            for (i = 0; i < vids.length; i++)
-                embed.addField("Song "+(i+1).toString(), vids[i].title);
+            for (let j = 0; j < vids.length; j++)
+                embed.addField("Song "+(j+1).toString(), vids[j].title);
             embed.addField("Exit", "exit");
 
             let choose;
@@ -207,7 +214,7 @@ module.exports = {
             }
         }
 
-        async function createRecord(link, server) {
+        async function createRecord(link) {
             //create struct to contain link, and vid info
             info = await ytdl.getInfo(link);
             vid = {
