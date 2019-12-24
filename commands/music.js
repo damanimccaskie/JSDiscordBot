@@ -37,10 +37,6 @@ module.exports = {
             let server = servers[all.guild.id];
             
             /* TODO: add command to view queue (preferably with song name and other details)
-                     add command to search user args if not link .... this if args.length > 2
-                     add code to verify valid url / id
-                     maybe add command to go back (would have to change how queue works)
-                     add command to clear queue
             */
             if (action == 'play') {
                 if (!args[0])
@@ -48,10 +44,7 @@ module.exports = {
                 else {
                     if (ytdl.validateURL(args[0]))
                         createRecord(args[0], server); //unfortunately can only parse 1 link at a time (currently)
-                    else {
-                        //assume a search query
-                        main.post(channel, "Sorry cant search at the moment");
-                    }
+                    else search(args.join("+"), server); //assume a search query
                 }
             } else if (action === "stop")
                 stop(server);
@@ -122,6 +115,37 @@ module.exports = {
             }
         }
 
+        function search(query, server) {
+            const cheerio = require("cheerio");
+            const phantom = require('phantom');
+            
+            main.post(channel, "Searching");
+
+            (async function() {
+                const instance = await phantom.create();
+                const page = await instance.createPage()
+
+                const status = await page.open("https://www.youtube.com/results?search_query=" + query);
+                const content = await page.property('content');
+                //parse page
+                dom = cheerio.load(content);
+                
+                let regex = RegExp("/watch[?]v=.+");
+                let links = dom("a.yt-uix-tile-link.yt-ui-ellipsis.yt-ui-ellipsis-2.yt-uix-sessionlink.spf-link"); //parse out results
+                let urls = new Array(links.length).fill(0).map((v, i) => links.eq(i).attr("href")).filter(link => regex.test(link));
+    
+                if (urls.length < 1) {
+                    main.post(channel, "Didn't find any results from that search sorry");
+                    console.log("No results");
+                    return;
+                }
+    
+                createRecord(urls[0].split("=")[1], server);
+
+                await instance.exit();
+            }());
+        }
+
         function resetQueue(server) {
             if (server) {
                 server.queue = [];
@@ -142,6 +166,7 @@ module.exports = {
                 }
 
                 server.queue.push(vid);
+                main.post(channel, "Adding "+vid.title+" to queue");
                 
                 //Get bot to join voice channel
                 if (!active) all.member.voiceChannel.join().then(function(connection) {

@@ -26,7 +26,7 @@ General Commands
 
 Music Commands
 --------------
-!play [arg] - arg can be a youtube link / id or a query (query not implemented yet)
+!play [arg] - arg can be a youtube link / id or a query
 !stop - stop currently playing music
 !skip - go to next song in list (if avaliable)
 !next - see skip
