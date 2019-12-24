@@ -15,7 +15,7 @@ Bot Used Exclusively For The Suicide Race Discord Server For Now!
 <li>!ping - reply pong...</li>
 <li>!prize - special video</li>
 <li>!help - gives list of commands</li>
-<li>!clear - not working...:(</li>
+<li>!clear - [arg] - will clear arg number of msgs</li>
 <li>!image - generate random image</li>
 <li>!meme - generate random meme</li>
 <li>!lenny - lenny face ( ͡° ͜ʖ ͡°)</li>

@@ -14,8 +14,7 @@ module.exports = {
 
         let resp;
         try {
-            //Warning: Function "eval" has been renamed to "evaluate" in v6.0.0, please use the new function instead.
-            resp = math.eval(args.join(" "));
+            resp = math.evaluate(args.join(" "));
         } catch (e) {
             return main.post(channel, "Sorry, please input a valid calculation.");
         }

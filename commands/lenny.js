@@ -3,7 +3,7 @@ module.exports = {
     description: "lenny command",
     
     execute(channel) {
-        main = require("../helperFunctions.js");
+        const main = require("../helperFunctions.js");
         main.post(channel, "( ͡° ͜ʖ ͡°)");
     }
 }

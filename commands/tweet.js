@@ -1,12 +1,12 @@
 const Jimp = require("jimp");
 const fs = require("fs");
-const Moment = require("moment-timezone");
+//const Moment = require("moment-timezone");
 
 module.exports = {
     name: "tweet",
     description: "tweet command",
     execute (channel, args) {
-        main = require("../helperFunctions.js")
+        const main = require("../helperFunctions.js")
         args = main.removeFirstArg(args);
         if (args.length >= 1) {
             Jimp.read({url: "https://cdn.glitch.com/8e40fcc8-31eb-4977-8cfa-52bd05aa65ef%2Ftrump.png?1532351177092"}).then(image => {

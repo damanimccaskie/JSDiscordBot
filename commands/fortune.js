@@ -1,9 +1,13 @@
 module.exports = {
     name: "fortune",
     description: "fortune command",
-    execute: async (channel) => {
-        main = require("../helperFunctions.js")
-        //if (args.length == 0) return main.sendMsg(bot, channelID, "Finding out a fortune for nothing, great.").then(msg => msg.delete(2300)); 
+    execute: (channel, args) => {
+        const main = require("../helperFunctions.js")
+        args = main.removeFirstArg(args)
+        if (args.length == 0) {
+            main.post(channel, "Finding out a fortune for nothing, great.")
+            return;
+        }
 
         var fortunes = [
             "Yes.",
@@ -28,7 +32,6 @@ module.exports = {
             "Very doubtful.",
         ];  
         
-        //this doesnt need to be a promise
-        await main.post(channel, fortunes[Math.floor(Math.random()*fortunes.length)]); 
+        main.post(channel, fortunes[Math.floor(Math.random()*fortunes.length)]); 
   }
 }    

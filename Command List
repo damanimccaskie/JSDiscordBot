@@ -9,8 +9,8 @@ General Commands
 !time - you'll see :)
 !ping - reply pong...
 !prize - special video
-!help - gives list of commands
-!clear - not working...:(
+!help - gives this list of commands
+!clear [arg] - will clear arg number of msgs (arg can be null...will default to 100)
 !image - generate random image
 !meme - generate random meme
 !lenny - lenny face ( ͡° ͜ʖ ͡°)

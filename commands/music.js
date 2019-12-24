@@ -43,11 +43,11 @@ module.exports = {
                     main.post(channel, "Kinda need a lil more info than that...");
                 else {
                     (async function() {
-                        if (ytdl.validateURL(args[0])) //if first arg is a link assume all other are links
+                        if (ytdl.validateURL(args[0])) { //if first arg is a link assume all other are links
                             for(let i = 0; i < args.length; i++)
                                 if (ytdl.validateURL(args[i])) //still validate tho
                                     addToQueue(await createRecord(args[i]), server);
-                        else await search(args.join("+"), server, all); //assume a search query
+                        } else await search(args.join("+"), server, all); //assume a search query
                         
                         if (server.queue.length > 0) {
                             //Get bot to join voice channel
