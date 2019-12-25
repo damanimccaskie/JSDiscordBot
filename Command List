@@ -22,6 +22,9 @@ General Commands
 !calc - calculate an expression
 !space
 !sigh
+!bin - convert decimal to binary
+!oct - convert decimal to octal
+!hex - convert decimal to hexadecimal
 ==========================================
 
 Music Commands

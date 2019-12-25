@@ -15,7 +15,7 @@ Bot Used Exclusively For The Suicide Race Discord Server For Now!
 <li>!ping - reply pong...</li>
 <li>!prize - special video</li>
 <li>!help - gives list of commands</li>
-<li>!clear - [arg] - will clear arg number of msgs</li>
+<li>!clear [arg] - will clear arg number of msgs</li>
 <li>!image - generate random image</li>
 <li>!meme - generate random meme</li>
 <li>!lenny - lenny face ( ͡° ͜ʖ ͡°)</li>
@@ -27,6 +27,9 @@ Bot Used Exclusively For The Suicide Race Discord Server For Now!
 <li>!calc - calculate an expression</li>
 <li>!space</li>
 <li>!sigh</li>
+<li>!bin - convert decimal to binary</li>
+<li>!oct - convert decimal to octal</li>
+<li>!hex - convert decimal to hexadecimal</li>
 </ul>
 
 
@@ -36,6 +39,6 @@ Bot Used Exclusively For The Suicide Race Discord Server For Now!
 <li>!stop - stop currently playing music</li>
 <li>!skip - go to next song in list (if avaliable)</li>
 <li>!next - see skip</li>
-<li>queue - view items in queue</li>
-<li>back - go to previous song</li>
+<li>!queue - view items in queue</li>
+<li>!back - go to previous song</li>
 </ul>
