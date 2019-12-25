@@ -15,10 +15,6 @@ logger.level = 'debug';
 
 // Initialize Discord Bot
 let bot = new Discord.Client();
-/*{
-   token: auth.token,
-   autorun: true
-}*/
 bot.login(auth.token);
 
 //dynamically load commands (js command files)
@@ -35,7 +31,7 @@ bot.on('ready', function (message, evt) {
 	logger.info(bot.user.username + ' - (' + bot.user.id + ')');
 });
 
-bot.on('message', function (message) {//, user_id, channelID, realMsg, message) {
+bot.on('message', function (message) { 
     // Our bot needs to know if it will execute a command
 	// It will listen for messages that will start with signal const (`!`)
 	if (message.author.username === "SR Bot") return; //ignore messages from self
@@ -50,7 +46,7 @@ bot.on('message', function (message) {//, user_id, channelID, realMsg, message) 
 			bot.commands.get(cmd).execute(channel, args, message);
 		else { //special case
 			found = false;
-			music = ["play", "pause", "skip", "stop", "next", "queue", "back"]; 
+			music = ["play", "skip", "stop", "next", "queue", "back"]; 
 			for (i = 0; i < music.length; i++)
 				if (cmd === music[i]) {
 					found = true;

@@ -60,8 +60,6 @@ module.exports = {
                 }
             } else if (action === "stop")
                 stop(server);
-            else if (action == "pause")
-                main.post(channel, "Programmers in get to this part yet srry...");// not sure we will either
             else if (action === "skip" || action === "next")
                 skip(server);
             else if (action === "queue")
