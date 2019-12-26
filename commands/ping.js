@@ -1,3 +1,4 @@
+var Discord = require('discord.js');
 module.exports = {
     name: "ping",
     description: "ping command",
@@ -6,3 +7,5 @@ module.exports = {
         main.post(channel, "Pong nigga!")
     } 
 }
+//`" + Math.floor(Math.round(bot.ping)) + "`ms"
+//msg.delete();
