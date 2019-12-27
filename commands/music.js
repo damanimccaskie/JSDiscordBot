@@ -142,7 +142,10 @@ module.exports = {
                 let id = urls[j].split("=")[1];
                 if (!ytdl.validateID(id))
                     continue;
-                vids.push(await createRecord(id, server));
+                let rec = await createRecord(id, server);
+                if (rec == null)
+                    continue;
+                vids.push(rec);
                 if (vids.length >= 5)
                     break;
             }
@@ -208,22 +211,25 @@ module.exports = {
             if (server) {
                 server.queue = [];
                 server.cur = 0;
-                server.filled = 0;
             }
         }
 
         async function createRecord(link) {
-            //create struct to contain link, and vid info
-            info = await ytdl.getInfo(link);
-            vid = {
-                "thumbnail": info.player_response.videoDetails.thumbnail,
-                "id": info.video_id, 
-                "url": info.video_url,
-                "length": info.length_seconds,
-                "title": info.title
-            };
-
-            return vid;
+            try {
+                //create struct to contain link, and vid info
+                info = await ytdl.getInfo(link);
+                vid = {
+                    "thumbnail": info.player_response.videoDetails.thumbnail,
+                    "id": info.video_id, 
+                    "url": info.video_url,
+                    "length": info.length_seconds,
+                    "title": info.title
+                };
+                return vid;
+            } catch (err) {
+                console.log("Couldnt get vid info");
+                return null;
+            }
         }
         
     } 

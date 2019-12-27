@@ -2,9 +2,9 @@ module.exports = {
     name: "help",
     description: "help command",
     execute(channel) {
-        main = require("../helperFunctions.js"); 
+        const main = require("../helperFunctions.js"); 
         const fs = require('fs');
-        const version = "2019-12-25 16:22"
+        const version = "2019-12-26 23:19"
 
         function displayHelp() {
             //load command list from file (Command List) and display them
