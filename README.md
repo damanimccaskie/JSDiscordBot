@@ -30,6 +30,11 @@ Bot Used Exclusively For The Suicide Race Discord Server For Now!
 <li>!bin - convert decimal to binary</li>
 <li>!oct - convert decimal to octal</li>
 <li>!hex - convert decimal to hexadecimal</li>
+<li>!cat - display random cat pic</li>
+<li>!cow</li>
+<li>!dog</li>
+<li>!joke</li>
+<li>!pepe</li>
 </ul>
 
 

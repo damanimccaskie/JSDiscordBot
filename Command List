@@ -25,6 +25,11 @@ General Commands
 !bin - convert decimal to binary
 !oct - convert decimal to octal
 !hex - convert decimal to hexadecimal
+!cat - display random cat pic
+!cow
+!dog
+!joke
+!pepe
 ==========================================
 
 Music Commands
