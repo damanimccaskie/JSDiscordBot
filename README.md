@@ -43,7 +43,7 @@ Bot Used Exclusively For The Suicide Race Discord Server For Now!
 ## Music Commands
 <ul>
 <li>!play [arg] - arg can be a youtube link / id or a query</li>
-<li>!stop - stop currently playing music</li>
+<li>!stop - stop all music (will also clear the queue)</li>
 <li>!skip - go to next song in list (if avaliable)</li>
 <li>!next - see skip</li>
 <li>!queue - view items in queue</li>
