@@ -35,6 +35,8 @@ Bot Used Exclusively For The Suicide Race Discord Server For Now!
 <li>!dog</li>
 <li>!joke</li>
 <li>!pepe</li>
+<li>!urban - search urban dictionary</li>
+<li>!weather - get weather conditions in a specified location</li>
 </ul>
 
 
