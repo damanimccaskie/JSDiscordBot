@@ -43,10 +43,16 @@ module.exports = {
                     main.post(channel, "Kinda need a lil more info than that...");
                 else {
                     (async function() {
-                        if (ytdl.validateURL(args[0])) { //if first arg is a link assume all other are links
+                        const ytpl = require('ytpl');
+                        if (ytpl.validateURL(args[0])) { //check if playlist
+                            let playlist = await ytpl(args[0], {limit: 10});
+                            playlist.items.forEach(i => addToQueue(makeRecord(i), server));
+                            all.delete();
+                        } else if (ytdl.validateURL(args[0])) { //if first arg is a link assume all other are links
                             for(let i = 0; i < args.length; i++)
                                 if (ytdl.validateURL(args[i])) //still validate tho
                                     addToQueue(await createRecord(args[i]), server);
+                            all.delete();
                         } else await search(args.join("+"), server, all); //assume a search query
                         
                         if (server.queue.length > 0) {
@@ -91,16 +97,16 @@ module.exports = {
             if(server.dispatcher) {
                 resetQueue(server);
                 //if i end the currently playing song and the queue empty...
-                server.dispatcher.end(); 
                 main.post(channel, "Stopping all songs");
+                server.dispatcher.end(); 
             }
         }
 
         function skip(server) {
             //ending currently playing song will effectively skip to next (if there is a next)
             if(server.dispatcher) {
-                server.dispatcher.end();
                 main.post(channel, "Skipping song");
+                server.dispatcher.end();
             }
         }
 
@@ -108,21 +114,20 @@ module.exports = {
             if (server.dispatcher) {
                 //need to do this twice to achieve back motion
                 server.cur -= 2;
-                server.dispatcher.end();
                 main.post(channel, "Going to previous song");
+                server.dispatcher.end();
             }
         }
 
+        //gotta change thiss for long lists
         function viewQueue(server) {
-            l = "";
             if (!server.queue || server.queue.length < 1)
                 main.post(channel, "Queue is empty");
             else {
                 for(let j = 0; j < server.queue.length; j++)
                     if (j == server.cur)
-                        l += "+ "+ server.queue[j].title + " +\n";
-                    else l += server.queue[j].title + "\n";
-                main.post(channel, l);
+                        main.post(channel, "+ "+ server.queue[j].title + " +");
+                    else main.post(channel, server.queue[j].title);
             }
         }
 
@@ -212,6 +217,16 @@ module.exports = {
                 server.queue = [];
                 server.cur = 0;
             }
+        }
+
+        function makeRecord(item) {
+            return {
+                "thumbnail": item.thumbnail,
+                "id": item.id,
+                "url": item.url_simple,
+                "length": item.duration,
+                "title": item.title
+            };
         }
 
         async function createRecord(link) {

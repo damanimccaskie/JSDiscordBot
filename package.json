@@ -34,7 +34,8 @@
     "urban": "^0.3.2",
     "weather-js": "^2.0.0",
     "winston": "^3.2.1",
-    "ytdl-core": "^1.0.3"
+    "ytdl-core": "^1.0.3",
+    "ytpl": "^0.1.19"
   },
   "repository": {
     "type": "git",
