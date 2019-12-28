@@ -1,9 +1,9 @@
 const Discord = require("discord.js");
-const translate = require('google-translate-api');
+const translate = require('google-translate-api'); //think is time to give up
 module.exports = {
     name: "translate",
     description: "translate 3 command",
-    execute: async (channel, msg, args) => {
+    execute: async (channel, args, msg) => {
         const main = require("../helperFunctions.js");
         args = msg.content.split(/[ ]+/);
     let lang = args[1];
@@ -29,7 +29,7 @@ module.exports = {
     return main.post(channel, {
         embed: embed
     });
-    }).catch(error => main.post(channel, {
+    }).catch(error => {main.post(channel, {
         embed: {
             color: 0xff2727,
             description: `:warning: **${msg.author.username}**, ${error}`,
@@ -38,6 +38,6 @@ module.exports = {
                 text: 'API Lantancy is ' + `${Date.now() - msg.createdTimestamp}` + ' ms'
             }
         }
-    })); return main.post(channel,"👌");
+    });console.log(error)}); return main.post(channel,"👌");
  }
 }

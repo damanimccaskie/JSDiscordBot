@@ -3,7 +3,7 @@ module.exports = {
     description: "translate languages",
     execute(channel, args) {
         const main = require("../helperFunctions.js"); 
-        const translate = require('google-translate-api');
+        const translate = require('google-translate-api'); //think is time to give up
         const language = require('./langs');
 
         args.shift(); //drop off tr

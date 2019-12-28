@@ -119,7 +119,6 @@ module.exports = {
             }
         }
 
-        //gotta change thiss for long lists
         function viewQueue(server) {
             if (!server.queue || server.queue.length < 1)
                 main.post(channel, "Queue is empty");
