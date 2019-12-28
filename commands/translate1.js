@@ -43,7 +43,7 @@ module.exports = {
         }
 
         function displayUsage() {
-            main.post("!tr language/abbr string");
+            main.post(channel, "!tr language/abbr string");
         }
     } 
 }
