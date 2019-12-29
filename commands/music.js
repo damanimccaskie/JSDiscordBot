@@ -72,6 +72,8 @@ module.exports = {
                 viewQueue(server);
             else if (action === "back")
                 back(server);
+            else if (action === "details") 
+                viewDetails(server);
             else;
         }
 
@@ -183,6 +185,43 @@ module.exports = {
 
             if (choose > 0 && choose < vids.length + 1)
                 addToQueue(vids[choose-1], server);
+        }
+
+        function viewDetails(server) {
+            if (server && server.queue && server.queue[server.cur]) {
+                let item = server.queue[server.cur];
+                const { RichEmbed } = require("discord.js");
+                const embed = new RichEmbed().setColor("#e9f931")
+
+                embed.setThumbnail(item.thumbnail.thumbnails[0].url).setTitle(item.title).setDescription(convertTime(item.length));
+                main.post(channel, embed);
+            } else main.post(channel, "I dont think there is a song playing currently");
+        }
+
+        function convertTime(s) {
+            days = hrs = mins = secs = 0;
+            for(let i = 0; i < s; i++) {
+                secs++;
+                if (secs > 59) {
+                    secs = 0;
+                    mins++;
+                    if (mins > 59) {
+                        mins = 0;
+                        hrs++;
+                        if (hrs > 23) {
+                            hrs = 0;
+                            days++;
+                        }
+                    }
+                }
+            }
+            if (days === 0) {
+                if (hrs === 0) {
+                    if (mins === 0) {
+                        return secs + " second" + secs === 1 ? "" : "s";
+                    } else return mins + " minute" + (mins === 1 ? "" : "s") + " and " + secs + " second" + (secs === 1 ? "" : "s");
+                } else return hrs + " hour" + (hrs === 1 ? " " : "s ") + mins + " minute" + (mins === 1 ? " " : "s") + " and " + secs + " second" + (secs === 1 ? "" : "s");
+            } else return days + " day" + (days === 1 ? " " : "s ") + hrs + " hour" + (hrs === 1 ? " " : "s ") + mins + " minute" + (mins === 1 ? "" : "s") + " and " + secs + " second" (secs === 1 ? "" : "s");
         }
 
         function addToQueue(vid, server) {

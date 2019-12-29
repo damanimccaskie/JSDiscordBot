@@ -42,4 +42,5 @@ Music Commands
 !next - see skip
 !queue - view items in queue
 !back - go to previous song
+!details - view details of currently playing song
 ==========================================
