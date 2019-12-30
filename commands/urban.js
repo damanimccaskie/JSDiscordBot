@@ -3,7 +3,7 @@ const urban = require("urban");
 module.exports = {
     name: "urban",
     description: "urban dictionary command",
-    execute: async (channel, args) => {
+    execute (channel, args) {
       const main = require("../helperFunctions.js")
       args.shift();
 

@@ -5,7 +5,7 @@ module.exports = {
     name: "fliptext",
     description: "fliptext command",
     execute:(channel, args) => {
-      main = require("../helperFunctions.js") 
+      const main = require("../helperFunctions.js") 
       args = main.removeFirstArg(args).reverse();
       var flipped = [];
   

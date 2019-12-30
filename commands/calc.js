@@ -16,7 +16,8 @@ module.exports = {
         try {
             resp = math.evaluate(args.join(" "));
         } catch (e) {
-            return main.post(channel, "Sorry, please input a valid calculation.");
+            main.post(channel, "Sorry, please input a valid calculation.");
+            return;
         }
         
         const embed = new Discord.RichEmbed()

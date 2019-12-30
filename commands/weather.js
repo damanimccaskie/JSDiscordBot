@@ -3,12 +3,15 @@ const weather = require("weather-js")
 module.exports = {
     name: "weather",
     description: "weather command",
-    execute: async (channel, args) => {
+    execute (channel, args) {
     const main = require("../helperFunctions.js")
         args = main.removeFirstArg(args);
         
         weather.find({search: args.join(" "), degreeType: "C"}, function(err, result) {
-            if(err) main.post(channel, err)
+            if(err) {
+                main.post(channel, err);
+                return;
+            }
 
             //If the place entered is invalid
             if(result.length === 0) {

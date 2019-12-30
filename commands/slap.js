@@ -1,7 +1,7 @@
 module.exports = {
     name: "slap",
     description: "slap command",
-    execute: async(channel, args, all) => {
+    execute(channel, args, all) {
         const main = require("../helperFunctions.js");
         let member = all.mentions.members.first();
 
