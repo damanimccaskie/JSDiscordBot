@@ -48,7 +48,9 @@ module.exports = {
             }
 
             //post image to chat
-            main.post(channel, urls[Math.floor(Math.random() * urls.length)]);
+            const { RichEmbed } = require("discord.js");
+            const embed = new RichEmbed().setColor("#33ffff").setImage(urls[Math.floor(Math.random() * urls.length)]);
+            main.post(channel, embed);
         });
     } 
 }
