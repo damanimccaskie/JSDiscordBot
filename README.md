@@ -49,4 +49,6 @@ Bot Used Exclusively For The Suicide Race Discord Server For Now!
 <li>!queue - view items in queue</li>
 <li>!back - go to previous song</li>
 <li>!details - view details of currently playing song</li>
+<li>!pause - pause currently playing song</li>
+<li>!resume - resume currently pause song</li>
 </ul>

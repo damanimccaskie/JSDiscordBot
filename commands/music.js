@@ -74,7 +74,29 @@ module.exports = {
                 back(server);
             else if (action === "details") 
                 viewDetails(server);
+            else if (action == "pause")
+                pause(server);
+            else if (action == "resume")
+                resume(server);
             else;
+        }
+
+        function pause(server) {
+            if (server.dispatcher.paused)
+                main.post(channel, "The track is already paused");
+            else {
+                server.dispatcher.pause();
+                main.post(channel, "Pausing " + server.queue[server.cur].title);
+            }
+        }
+
+        function resume(server) {
+            if (!server.dispatcher.paused)
+                main.post(channel, "The track is not paused");
+            else {
+                server.dispatcher.resume();
+                main.post(channel, "Resuming " + server.queue[server.cur].title);
+            }
         }
 
         function play(connection, server) {
@@ -90,6 +112,7 @@ module.exports = {
                     play(connection, server);
                 } else {
                     active = false;
+                    resetQueue(server); //make sure on next launch queue is empty and u start from the added song
                     connection.disconnect(); //if none just leave voice channel
                 }
             })

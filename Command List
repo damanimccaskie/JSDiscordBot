@@ -43,4 +43,6 @@ Music Commands
 !queue - view items in queue
 !back - go to previous song
 !details - view details of currently playing song
+!pause - pause currently playing song
+!resume - resume currently pause song
 ==========================================
