@@ -1,6 +1,6 @@
 var servers = {};
 var active = false;
-var stream;
+const MAX_SONGS = 1
 
 module.exports = {
     name: "music",
@@ -9,21 +9,24 @@ module.exports = {
         let main = require("../helperFunctions.js")
 
         if (args.length < 1) {
-            //main.post(channel, "Error?");
+            // i dont think execution would ever reach here
+            main.post(channel, "Error?");
             return;
         }
 
         action = args.shift().toLowerCase();
 
         if (!action) {
-            //main.post(channel, "Error?");
+            // same here
+            main.post(channel, "Error?");
             return;
         }
 
         if (action === "music") {
-            main.post(channel, "Slightly confused");
+            main.post(channel, "Music itself is not a command");
             return;
         }
+
         const ytdl = require("ytdl-core");
 
         if (!servers[all.guild.id]) servers[all.guild.id] = {
@@ -36,8 +39,7 @@ module.exports = {
         else {
             let server = servers[all.guild.id];
 
-            /* TODO: add command to view queue (preferably with song name and other details)
-            */
+            /* TODO: add command to view queue (preferably with song name and other details) */
             if (action == 'play') {
                 if (!args[0])
                     main.post(channel, "Kinda need a lil more info than that...");
@@ -45,9 +47,13 @@ module.exports = {
                     (async function () {
                         const ytpl = require('ytpl');
                         if (ytpl.validateURL(args[0])) { //check if playlist
-                            let playlist = await ytpl(args[0], { limit: 10 });
-                            playlist.items.forEach(i => addToQueue(makeRecord(i), server));
+                            /* ytpl(args[0], { limit: 10 }).then((playlist) => console.log(playlist)).catch(err => {
+                                console.error(err);
+                            });
+                            console.log(playlist)
+                            playlist.items.forEach(i => addToQueue(makeRecord(i), server)); */
                             all.delete();
+                            main.post(channel, "Playlists are not working currently...");
                         } else if (ytdl.validateURL(args[0])) { //if first arg is a link assume all other are links
                             for (let i = 0; i < args.length; i++)
                                 if (ytdl.validateURL(args[i])) //still validate tho
@@ -101,9 +107,7 @@ module.exports = {
 
         function play(connection, server) {
             let item = server.queue[server.cur];
-            //link.split("?")[1].substring(2) //if ya choose to pass as simply an id
-            stream = ytdl(item.id, { filter: "audioonly" });
-            server.dispatcher = connection.playStream(stream, { seek: 0, volume: 1 });
+            server.dispatcher = connection.playStream(item.url, { seek: 0, volume: 1 });
             main.post(channel, "Playing " + item.title);
 
             server.dispatcher.on("end", function () {
@@ -172,10 +176,10 @@ module.exports = {
                 if (!ytdl.validateID(id))
                     continue;
                 let rec = await createRecord(id, server);
-                if (rec == null)
+                if (!rec)
                     continue;
                 vids.push(rec);
-                if (vids.length >= 5)
+                if (vids.length >= MAX_SONGS)
                     break;
             }
 
@@ -184,12 +188,12 @@ module.exports = {
                 .setTitle("Choose a song by entering a number");
 
 
-            for (let j = 0; j < vids.length; j++)
+            /*for (let j = 0; j < vids.length; j++)
                 embed.addField("Song " + (j + 1).toString(), vids[j].title);
-            embed.addField("Exit", "exit");
+            embed.addField("Exit", "exit");*/
 
-            let choose;
-            main.post(channel, embed);
+            let choose = 1;
+            /* main.post(channel, embed);
 
             try {
                 let response = await msg.channel.awaitMessages(
@@ -204,7 +208,7 @@ module.exports = {
                 choose = parseInt(response.first().content);
             } catch (e) {
                 console.log(e);
-            }
+            }*/
 
             if (choose > 0 && choose < vids.length + 1)
                 addToQueue(vids[choose - 1], server);
@@ -248,8 +252,10 @@ module.exports = {
         }
 
         function addToQueue(vid, server) {
-            main.post(channel, "Adding " + vid.title + " to queue");
-            server.queue.push(vid);
+            if (vid) {
+                main.post(channel, "Adding " + vid.title + " to queue");
+                server.queue.push(vid);
+            } else console.log("Vid ds was null");
         }
 
         async function getSearchResults(query) {
@@ -266,7 +272,7 @@ module.exports = {
             dom = cheerio.load(content);
 
             let regex = RegExp("/watch[?]v=.+");
-            let links = dom("a.yt-uix-tile-link.yt-ui-ellipsis.yt-ui-ellipsis-2.yt-uix-sessionlink.spf-link"); //parse out results
+            let links = dom("a"); //parse out results
             let urls = new Array(links.length).fill(0).map((v, i) => links.eq(i).attr("href")).filter(link => regex.test(link) && !link.includes("list"));
 
             await instance.exit();
@@ -293,17 +299,29 @@ module.exports = {
         async function createRecord(link) {
             try {
                 //create struct to contain link, and vid info
-                info = await ytdl.getInfo(link);
-                vid = {
-                    "thumbnail": info.player_response.videoDetails.thumbnail,
-                    "id": info.video_id,
-                    "url": info.video_url,
-                    "length": info.length_seconds,
-                    "title": info.title
-                };
-                return vid;
+                const youtubedl = require('youtube-dl')
+                let vid = null;
+                youtubedl.getInfo(link, ["-f 140"], (err, info) => {
+                    if (err)
+                        vid = err;
+                    else vid = {
+                        "thumbnail": info.thumbnails[0].url,
+                        "id": info.id,
+                        "url": info.url,
+                        "length": info._duration_raw,
+                        "title": info.title
+                    };
+                    console.log(vid)
+                });
+                while(!vid) {
+                    await new Promise(r => setTimeout(r, 250))
+                }
+                if (typeof(vid) === 'string')
+                    return null;
+                else return vid;
             } catch (err) {
                 console.log("Couldnt get vid info");
+                console.log(err)
                 return null;
             }
         }

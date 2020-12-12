@@ -34,6 +34,7 @@
     "urban": "^0.3.2",
     "weather-js": "^2.0.0",
     "winston": "^3.3.3",
+    "youtube-dl": "^3.0.2",
     "ytdl-core": "^1.0.9",
     "ytpl": "^0.1.22"
   },
