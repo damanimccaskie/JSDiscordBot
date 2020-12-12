@@ -2,7 +2,7 @@
 let giveMeAJoke = require('give-me-a-joke');;
 
 module.exports = {
-    name: "cnjoke",
+    name: "joke",
     description: "Chuck Norris joke command",
     execute(channel) {
         const main = require("../helperFunctions.js");
