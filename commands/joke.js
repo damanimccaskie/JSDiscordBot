@@ -7,7 +7,7 @@ module.exports = {
     execute(channel) {
         const main = require("../helperFunctions.js");
 
-        giveMeAJoke.getRandomCNJoke(function(joke){
+        giveMeAJoke.getRandomCNJoke(function (joke) {
             main.post(channel, joke)
         })
     }

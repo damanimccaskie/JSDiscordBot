@@ -4,5 +4,5 @@ module.exports = {
     execute(channel) {
         const main = require("../helperFunctions.js")
         main.post(channel, "Hello! :)");
-    } 
+    }
 }

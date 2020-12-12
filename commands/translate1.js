@@ -2,7 +2,7 @@ module.exports = {
     name: "tr",
     description: "translate languages",
     execute(channel, args) {
-        const main = require("../helperFunctions.js"); 
+        const main = require("../helperFunctions.js");
         const translate = require('google-translate-api'); //think is time to give up
         const language = require('./langs');
 
@@ -13,7 +13,7 @@ module.exports = {
         }
 
         //if language (full name) entered by user exist
-        if (language.some(ele => ele.name === args[0])) { 
+        if (language.some(ele => ele.name === args[0])) {
             let tr_to = language.filter(ele => ele.name === args[0])[0].abrv;
             args.shift(); //drop off lang
             if (args.length < 1) {
@@ -22,9 +22,9 @@ module.exports = {
             }
 
             let str = args.join(' ');
-            translate(str, {to: tr_to})
+            translate(str, { to: tr_to })
                 .then(res => main.post(channel, res.text))
-                .catch(err => main.post(channel, "Error: "+err));
+                .catch(err => main.post(channel, "Error: " + err));
         }
 
         // if language (abbrievation) enterend by user exist
@@ -33,17 +33,17 @@ module.exports = {
                 displayUsage();
                 return;
             }
-            
+
             let tr_to = language.filter(ele => ele.abrv === args[1])[0].abrv;
             args.shift(); //drop off abbr
             let str = args.join(' ');
-            translate(str, {to: tr_to})
+            translate(str, { to: tr_to })
                 .then(res => main.post(channel, res.text))
-                .catch(err => main.post(channel, "Error: "+err));
+                .catch(err => main.post(channel, "Error: " + err));
         }
 
         function displayUsage() {
             main.post(channel, "!tr language/abbr string");
         }
-    } 
+    }
 }

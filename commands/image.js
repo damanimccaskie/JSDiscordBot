@@ -20,16 +20,16 @@ module.exports = {
         //https://searx.me/?categories=images&language=en-US&q=
         //https://www.qwant.com/?t=images&q=
         //if user didnt pass args randomly choose from set
-        let options = { 
+        let options = {
             url: "http://results.dogpile.com/serp?qc=images&q=" + (!search ? set[Math.floor(Math.random() * set.length)] : search),
             method: "GET",
             headers: {
                 "Accept": "text/html",
                 "User-Agent": "Mozilla/5.0 (X11; Linux i586; rv:31.0) Gecko/20100101 Firefox/71.0"
-            } 
+            }
         };
 
-        request(options, function(error, response, body) {
+        request(options, function (error, response, body) {
             if (error) {
                 console.log(error);
                 return;
@@ -52,5 +52,5 @@ module.exports = {
             const embed = new RichEmbed().setColor("#33ffff").setImage(urls[Math.floor(Math.random() * urls.length)]);
             main.post(channel, embed);
         });
-    } 
+    }
 }

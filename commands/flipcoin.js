@@ -5,6 +5,6 @@ module.exports = {
         const main = require("../helperFunctions.js")
         let output = ["HEADS", "TAILS"];
 
-        main.post(channel, output[Math.floor(Math.random()*output.length)] );
+        main.post(channel, output[Math.floor(Math.random() * output.length)]);
     }
 }

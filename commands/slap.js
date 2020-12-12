@@ -14,10 +14,12 @@ module.exports = {
         } else {
             let slapee = member.displayName;
 
-            main.post(channel, {embed: {
-                color: 3447003,
-                title: all.author.username + " bitch slapped :raised_back_of_hand: " + slapee + ", " + slapee + " is now in the hospital! :hospital:"
-            }});
+            main.post(channel, {
+                embed: {
+                    color: 3447003,
+                    title: all.author.username + " bitch slapped :raised_back_of_hand: " + slapee + ", " + slapee + " is now in the hospital! :hospital:"
+                }
+            });
         }
     }
 }

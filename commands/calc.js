@@ -1,13 +1,13 @@
-var Discord = require('discord.js');
-const math = require ('mathjs');
+const Discord = require('discord.js');
+const math = require('mathjs');
 
 module.exports = {
     name: "calc",
     description: "calculator command",
-    execute (channel, args){
+    execute(channel, args) {
         main = require("../helperFunctions.js")
         args = main.removeFirstArg(args);
-        if(!args[0]) {
+        if (!args[0]) {
             main.post(channel, "Please input a calculation.");
             return;
         }
@@ -19,12 +19,12 @@ module.exports = {
             main.post(channel, "Sorry, please input a valid calculation.");
             return;
         }
-        
+
         const embed = new Discord.RichEmbed()
-           .setColor(0xffffff)
-           .setTitle("Math Calculation")
-           .addField('Input', `\`\`\`js\n${args.join(" ")}\`\`\``)
-           .addField('Output', `\`\`\`js\n${resp}\`\`\``)
+            .setColor(0xffffff)
+            .setTitle("Math Calculation")
+            .addField('Input', `\`\`\`js\n${args.join(" ")}\`\`\``)
+            .addField('Output', `\`\`\`js\n${resp}\`\`\``)
 
         main.post(channel, embed);
     }

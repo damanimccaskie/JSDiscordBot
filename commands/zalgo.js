@@ -1,4 +1,4 @@
-const Zalgo = require ("to-zalgo");
+const Zalgo = require("to-zalgo");
 module.exports = {
     name: "zalgo",
     description: "zalgo command",

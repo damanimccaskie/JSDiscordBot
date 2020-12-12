@@ -30,8 +30,8 @@ module.exports = {
             "My sources say no.",
             "Outlook not so good...",
             "Very doubtful.",
-        ];  
-        
-        main.post(channel, fortunes[Math.floor(Math.random()*fortunes.length)]); 
-  }
+        ];
+
+        main.post(channel, fortunes[Math.floor(Math.random() * fortunes.length)]);
+    }
 }    

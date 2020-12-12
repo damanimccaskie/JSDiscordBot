@@ -1,10 +1,10 @@
 module.exports = {
-    name: "sigh",
-    description: "sigh command",
-    execute(channel) {
-        const main = require("../helperFunctions.js"); 
-       
-        const ascii = `
+  name: "sigh",
+  description: "sigh command",
+  execute(channel) {
+    const main = require("../helperFunctions.js");
+
+    const ascii = `
 \`\`\`
   _______   _________    _________   ,        ,
  /              |       /            |        |
@@ -19,6 +19,6 @@ module.exports = {
 \`\`\`
 `;
 
-        main.post(channel, ascii);
-    }
+    main.post(channel, ascii);
+  }
 }
