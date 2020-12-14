@@ -1,7 +1,7 @@
 # DiscordBot
 The Discord Bot
 
-Bot Used Exclusively For The Suicide Race Discord Server For Now!
+Bot Used Exclusively For The Suicide Race Discord Server, Will Be Available For More Soon!
 
 
 ## General Commands
