@@ -46,14 +46,15 @@ module.exports = {
                 else {
                     (async function () {
                         const ytpl = require('ytpl');
-                        if (ytpl.validateURL(args[0])) { //check if playlist
-                            /* ytpl(args[0], { limit: 10 }).then((playlist) => console.log(playlist)).catch(err => {
-                                console.error(err);
-                            });
-                            console.log(playlist)
-                            playlist.items.forEach(i => addToQueue(makeRecord(i), server)); */
+                        if (ytpl.validateID(args[0])) { //check if playlist
+                            let playlist = await ytpl(args[0]);
                             all.delete();
-                            main.post(channel, "Playlists are not working currently...");
+                            if (playlist) {
+                                main.post(channel, "Getting playlist items...")
+                                for(let i = 0; i < playlist.items.length; i++)
+                                    addToQueue(await createRecord(playlist.items[i].url), server);
+                            }
+                            else main.post(channel, "Unable to get playlist items...")
                         } else if (ytdl.validateURL(args[0])) { //if first arg is a link assume all other are links
                             for (let i = 0; i < args.length; i++)
                                 if (ytdl.validateURL(args[i])) //still validate tho
@@ -286,19 +287,9 @@ module.exports = {
             }
         }
 
-        function makeRecord(item) {
-            return {
-                "thumbnail": item.thumbnail,
-                "id": item.id,
-                "url": item.url_simple,
-                "length": item.duration,
-                "title": item.title
-            };
-        }
-
         async function createRecord(link) {
             try {
-                //create struct to contain link, and vid info
+                // create struct to contain link, and vid info
                 const youtubedl = require('youtube-dl')
                 let vid = null;
                 youtubedl.getInfo(link, [], (err, info) => {
