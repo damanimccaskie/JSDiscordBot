@@ -255,7 +255,7 @@ module.exports = {
             if (vid) {
                 main.post(channel, "Adding " + vid.title + " to queue");
                 server.queue.push(vid);
-            } else console.log("Vid ds was null");
+            } else console.log("Vid data struct was null");
         }
 
         async function getSearchResults(query) {
@@ -301,21 +301,28 @@ module.exports = {
                 //create struct to contain link, and vid info
                 const youtubedl = require('youtube-dl')
                 let vid = null;
-                youtubedl.getInfo(link, ["-f 140"], (err, info) => {
-                    if (err)
-                        vid = err;
+                youtubedl.getInfo(link, [], (err, info) => {
+                    if (err) throw err;
+
+                    vid_url = null;
+                    for(let i = 0; i < info.formats.length; i++)
+                        if (info.formats[i].format_id == "140") {
+                            vid_url = info.formats[i].url;
+                            break;
+                        }
+
+                    if (!vid_url)
+                        vid = "format not avaliable";
                     else vid = {
                         "thumbnail": info.thumbnails[0].url,
                         "id": info.id,
-                        "url": info.url,
+                        "url": vid_url,
                         "length": info._duration_raw,
                         "title": info.title
                     };
-                    console.log(vid)
                 });
-                while(!vid) {
+                while(!vid)
                     await new Promise(r => setTimeout(r, 250))
-                }
                 if (typeof(vid) === 'string')
                     return null;
                 else return vid;
