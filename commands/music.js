@@ -1,6 +1,6 @@
 var servers = {};
 var active = false;
-const MAX_SONGS = 1
+const MAX_SONGS = 5
 
 module.exports = {
     name: "music",
@@ -62,13 +62,9 @@ module.exports = {
                             all.delete();
                         } else await search(args.join("+"), server, all); //assume a search query
 
-                        if (server.queue.length > 0) {
+                        if (server.queue.length > 0)
                             //Get bot to join voice channel
-                            if (!active) all.member.voiceChannel.join().then(function (connection) {
-                                active = true;
-                                play(connection, server);
-                            });
-                        }
+                            joinAndPlay(server);
                     }());
                 }
             } else if (action === "stop")
@@ -86,6 +82,13 @@ module.exports = {
             else if (action == "resume")
                 resume(server);
             else;
+        }
+
+        function joinAndPlay(server) {
+            if (!active) all.member.voiceChannel.join().then(function (connection) {
+                active = true;
+                play(connection, server);
+            });
         }
 
         function pause(server) {
@@ -153,10 +156,16 @@ module.exports = {
             if (!server.queue || server.queue.length < 1)
                 main.post(channel, "Queue is empty");
             else {
-                for (let j = 0; j < server.queue.length; j++)
-                    if (j == server.cur)
-                        main.post(channel, "+ " + server.queue[j].title + " +");
-                    else main.post(channel, server.queue[j].title);
+                let buffer = "";
+                for (let j = 0; j < server.queue.length; j++) {
+                    buffer += (j == server.cur ? "+ " + server.queue[j].title + " +" : channel, server.queue[j].title) + "\n";
+                    if (buffer.length >= 1500) {
+                        main.post(channel, buffer);
+                        buffer = ""
+                    }
+                }
+                if (buffer.length > 0)
+                    main.post(channel, buffer);
             }
         }
 
@@ -189,30 +198,22 @@ module.exports = {
                 .setTitle("Choose a song by entering a number");
 
 
-            /*for (let j = 0; j < vids.length; j++)
+            for (let j = 0; j < vids.length; j++)
                 embed.addField("Song " + (j + 1).toString(), vids[j].title);
-            embed.addField("Exit", "exit");*/
+            embed.addField("Exit", "exit");
 
-            let choose = 1;
-            /* main.post(channel, embed);
+            main.post(channel, embed);
 
-            try {
-                let response = await msg.channel.awaitMessages(
-                    m => (m.content > 0 && m.content < vids.length) || m.content === 'exit',
-                    {
-                        max: 1,
-                        maxProcessed: 1,
-                        time: 30000, //wait 30 secs
-                        errors: ["time"]
-                    }
-                );
-                choose = parseInt(response.first().content);
-            } catch (e) {
-                console.log(e);
-            }*/
-
-            if (choose > 0 && choose < vids.length + 1)
-                addToQueue(vids[choose - 1], server);
+            msg.channel.awaitMessages(m => (m.content > 0 && m.content < vids.length) || m.content === 'exit', {
+                max: 2,
+                time: 45000,
+                errors: ['time'] 
+            }).then(collected => {
+                let choose = parseInt(collected.first().content);
+                if (choose > 0 && choose < vids.length + 1)
+                    addToQueue(vids[choose - 1], server);
+                joinAndPlay(server);
+            }).catch(collected => msg.channel.send('Guess you changed your mind'));
         }
 
         function viewDetails(server) {
@@ -260,23 +261,12 @@ module.exports = {
         }
 
         async function getSearchResults(query) {
-            const cheerio = require("cheerio");
-            const phantom = require('phantom');
-
-            const instance = await phantom.create();
-            const page = await instance.createPage()
-
-            await page.open("https://www.youtube.com/results?search_query=" + query);
-            const content = await page.property('content');
-
-            //parse page
-            dom = cheerio.load(content);
-
+            const ytsr = require('ytsr');
+        
+            const searchResults = (await ytsr(query)).items;
             let regex = RegExp("/watch[?]v=.+");
-            let links = dom("a"); //parse out results
-            let urls = new Array(links.length).fill(0).map((v, i) => links.eq(i).attr("href")).filter(link => regex.test(link) && !link.includes("list"));
-
-            await instance.exit();
+            let urls = Array.from(searchResults.map(v => v.url));
+            urls = urls.filter(v => regex.test(v) && !v.includes("list"));
             return urls;
         }
 
