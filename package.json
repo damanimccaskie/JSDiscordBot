@@ -3,11 +3,13 @@
   "version": "1.0.0",
   "description": "Suicide Race's first Discord Bot",
   "main": "bot.js",
+  "scripts": {
+    "test": "jest"
+  },
   "author": "Damani McCaskie",
   "contributors": [
     {
-      "name": "Christopher King",
-      "email": "null"
+      "name": "Christopher King"
     }
   ],
   "permissions": 1277597760,
@@ -41,5 +43,8 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/TheNotoriousMac/JSDiscordBot"
+  },
+  "devDependencies": {
+    "jest": "^26.6.3"
   }
 }
