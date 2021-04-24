@@ -67,7 +67,11 @@ module.exports = {
 						name: '!weather',
 						value: 'Get weather conditions of a specified location',
 						inline: true,
-					},
+					}, {
+                        name: "!price [arg]",
+                        value: "Get the price of a specific cryptocurrency",
+                        inline: true,
+                    },
 					{
 						name: '!audio',
 						value: 'Show all music commands!',
