@@ -15,6 +15,7 @@
   "permissions": 1277597760,
   "dependencies": {
     "cheerio": "^1.0.0-rc.3",
+    "coingecko-api": "^1.0.10",
     "cows": "^2.1.0",
     "discord.js": "^11.6.4",
     "discord.js-commando": "^0.10.0",
@@ -24,7 +25,7 @@
     "fs": "0.0.1-security",
     "give-me-a-joke": "^0.1.2",
     "jimp": "^0.9.8",
-    "mathjs": "^6.6.5",
+    "mathjs": "^9.3.2",
     "node-opus": "^0.3.3",
     "opusscript": "0.0.7",
     "random-number": "0.0.9",
