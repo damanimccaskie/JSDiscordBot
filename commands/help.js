@@ -4,7 +4,7 @@ module.exports = {
 	execute(channel) {
 		const main = require("../helperFunctions.js");
 		// const fs = require('fs');
-		const version = "2021-04-24 13:48"
+		const version = "2021-10-29 12:35"
 
 		function displayHelp() {
 			//load command list from file (Command List) and display them
@@ -172,6 +172,7 @@ module.exports = {
 				},
 			};
 
+			main.post(channel, "Version: "+version);
 			main.post(channel, { embed: exampleEmbed });
 
 		}

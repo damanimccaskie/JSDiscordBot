@@ -4,7 +4,7 @@ module.exports = {
 	execute(channel) {
 		const main = require("../helperFunctions.js");
 		const fs = require('fs');
-		const version = "2020-04-20 11:15"
+		const version = "2021-10-29 12:35"
 
 		function displayHelp() {
 			//load command list from file (Command List) and display them
@@ -71,8 +71,11 @@ module.exports = {
                         name: "!price [arg]",
                         value: "Get the price of a specific cryptocurrency",
                         inline: true,
-                    },
-					{
+                    }, {
+                        name: "!track [arg]",
+                        value: "Setup a listener for new videos from specified youtuber",
+                        inline: true,
+                    }, {
 						name: '!audio',
 						value: 'Show all music commands!',
 						inline: true,
@@ -86,6 +89,7 @@ module.exports = {
 				},
 			};
 
+			main.post(channel, "Version: "+version);
 			main.post(channel, { embed: exampleEmbed });
 
 		}
