@@ -71,13 +71,22 @@ module.exports = {
                     Name: name,
                     Thumbnail: thumb,
                     Channel: "https://www.youtube.com/channel/" + id,
-                    Feed: "https://www.youtube.com/feeds/videos.xml?channel_id=" + id
+                    Feed: "https://www.youtube.com/feeds/videos.xml?channel_id=" + id,
+                    DiscordChannel: channel.id // rmr which channel the youtuber was ask to track from
                 });
             });
         });
     },
-    getUpdates: (channel) => {
+    getUpdates: (channels) => {
         const main = require("../helperFunctions.js");
+
+        // if this is the first time reloading the bot,
+        // checked to see if there is a file storing the 
+        // previously posted videos
+        checked = checked.length < 1 ? loadChecked() : checked;
+
+        // read add the channels that have been added for tracking
+        // and look for the latest video
         fs.readFile("track.json", (err, data) => {
             if(err) {
                 console.log(err);
@@ -110,12 +119,16 @@ module.exports = {
                     });
 
                     if (!checked.includes(videos[0].id)) {
+                        const channel = channels.get(record.DiscordChannel); // get the discord channel to post to
                         main.post(channel, "https://www.youtube.com/watch?v=" + videos[0].id)
                         checked.push(videos[0].id);
                     }
                 });
             });
-        })
+        });
+
+        // save checked videos to persistent storage
+        storeChecked();
     }
 }
 
@@ -136,4 +149,18 @@ const addToDb = (record) => {
         fs.writeFileSync("track.json", JSON.stringify(records));
         console.log("Updated the database");
     })
+}
+
+const storeChecked = () => {
+    fs.writeFileSync("checked.json", JSON.stringify(checked));
+}
+
+const loadChecked = () => {
+    try {
+        let data = fs.readFileSync("checked.json");
+        return JSON.parse(data);
+    } catch (e) {
+        console.log("Failed to load checked, may be first time running");
+        return [];
+    }
 }
