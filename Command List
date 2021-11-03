@@ -33,6 +33,7 @@ General Commands
 !urban - search urban dictionary
 !weather - get weather conditions of a specified location
 !track [arg]
+!untrack [arg]
 ==========================================
 
 Music Commands

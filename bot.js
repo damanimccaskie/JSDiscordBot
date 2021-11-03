@@ -29,7 +29,7 @@ bot.on('ready', function (message, evt) {
 	logger.info('Connected');
 	logger.info('Logged in as: ');
 	logger.info(bot.user.username + ' - (' + bot.user.id + ')');
-	const interval = 30 * 60 * 1000; // 30 mins
+	const interval = 10 * 60 * 1000; // 10 mins
 	setInterval(() => bot.commands.get("track").getUpdates(bot.channels), interval);
 });
 

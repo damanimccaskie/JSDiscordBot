@@ -60,7 +60,7 @@ module.exports = {
                 let thumb = entries[1].match(mediaRegex)[1];
 
                 const { RichEmbed } = require("discord.js");
-                const embed = new RichEmbed().setColor("#e9f931")
+                const embed = new RichEmbed().setColor("#085cfb")
 
                 embed.setThumbnail(thumb).setTitle("Track results (adding to db)").setDescription("Youtube users found from searching " + search);
                 embed.addField("Youtuber Name", name).addField("Channel url", "https://www.youtube.com/channel/" + id);
@@ -144,10 +144,12 @@ const addToDb = (record) => {
             return;
         }
         let records = JSON.parse(data);
-        if (!records.filter(i => i.Name == record.Name))
+        // if record is not already in the db, add it
+        if (records.filter(i => i.Name == record.Name).length < 1) {
             records.push(record);
-        fs.writeFileSync("track.json", JSON.stringify(records));
-        console.log("Updated the database");
+            fs.writeFileSync("track.json", JSON.stringify(records));
+            console.log("Updated the database");
+        }
     })
 }
 
