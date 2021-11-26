@@ -1,11 +1,10 @@
 const Jimp = require("jimp");
 const fs = require("fs");
-//const Moment = require("moment-timezone");
 
 module.exports = {
   name: "tweet",
   description: "tweet command",
-  execute(channel, args) {
+  execute({channel, args}) {
     const main = require("../helperFunctions.js")
     args = main.removeFirstArg(args);
     if (args.length >= 1) {

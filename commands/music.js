@@ -5,8 +5,10 @@ const MAX_SONGS = 5
 module.exports = {
     name: "music",
     description: "music command",
-    execute(channel, args, all) {
+    execute({channel, args, message}) {
         let main = require("../helperFunctions.js")
+
+        return main.post(channel, "This command is deprecated");
 
         if (args.length < 1) {
             // i dont think execution would ever reach here
@@ -26,18 +28,15 @@ module.exports = {
             main.post(channel, "Music itself is not a command");
             return;
         }
-
-        const ytdl = require("ytdl-core");
-
-        if (!servers[all.guild.id]) servers[all.guild.id] = {
+        if (!servers[message.guild.id]) servers[message.guild.id] = {
             queue: [],
             cur: 0,
         }; //create a queue for this server if it does not exist*/
 
-        if (!all.member.voiceChannel)
+        if (!message.member.voiceChannel)
             main.post(channel, "You need to be in the voice channel to have me play music");
         else {
-            let server = servers[all.guild.id];
+            let server = servers[message.guild.id];
 
             /* TODO: add command to view queue (preferably with song name and other details) */
             if (action == 'play') {
@@ -48,7 +47,7 @@ module.exports = {
                         const ytpl = require('ytpl');
                         if (ytpl.validateID(args[0])) { //check if playlist
                             let playlist = await ytpl(args[0]);
-                            all.delete();
+                            message.delete();
                             if (playlist) {
                                 main.post(channel, "Getting playlist items...")
                                 for(let i = 0; i < playlist.items.length; i++)
@@ -59,8 +58,8 @@ module.exports = {
                             for (let i = 0; i < args.length; i++)
                                 if (ytdl.validateURL(args[i])) //still validate tho
                                     addToQueue(await createRecord(args[i]), server);
-                            all.delete();
-                        } else await search(args.join("+"), server, all); //assume a search query
+                            message.delete();
+                        } else await search(args.join("+"), server, message); //assume a search query
 
                         if (server.queue.length > 0)
                             //Get bot to join voice channel
@@ -85,7 +84,7 @@ module.exports = {
         }
 
         function joinAndPlay(server) {
-            if (!active) all.member.voiceChannel.join().then(function (connection) {
+            if (!active) message.member.voiceChannel.join().then(function (connection) {
                 active = true;
                 play(connection, server);
             });

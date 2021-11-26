@@ -6,7 +6,7 @@ let checked = [];
 module.exports = {
     name: "track",
     description: "get latest videos from a youtuber",
-    execute(channel, args) {
+    execute({channel, args}) {
         const main = require("../helperFunctions.js");
 
         //if user passed args to search, join them together for the url
@@ -15,7 +15,6 @@ module.exports = {
                         .reduce((prevValue, curValue) => prevValue + curValue + "+", "")
                         .trim();
         search = search.substring(0, search.length - 1);
-        console.log("search: '" + search + "'");
         
         if (search.length < 1) {
             main.post(channel, "Need to provide a search");
@@ -145,7 +144,7 @@ const addToDb = (record) => {
         }
         let records = JSON.parse(data);
         // if record is not already in the db, add it
-        if (records.filter(i => i.Name == record.Name).length < 1) {
+        if (records.filter(i => i.Name == record.Name && i.DiscordChannel != record.DiscordChannel).length < 1) {
             records.push(record);
             fs.writeFileSync("track.json", JSON.stringify(records));
             console.log("Updated the database");

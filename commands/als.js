@@ -1,7 +1,7 @@
 module.exports = {
     name: "als",
     description: "als command",
-    execute(channel) {
+    execute({channel}) {
         const main = require("../helperFunctions.js")
         const { Attachment } = require("discord.js");
         // upload file

@@ -1,7 +1,7 @@
 module.exports = {
     name: "fortune",
     description: "fortune command",
-    execute: (channel, args) => {
+    execute: ({channel, args}) => {
         const main = require("../helperFunctions.js")
         args = main.removeFirstArg(args)
         if (args.length == 0) {
@@ -9,7 +9,7 @@ module.exports = {
             return;
         }
 
-        var fortunes = [
+        let fortunes = [
             "Yes.",
             "It is certain.",
             "It is decidedly so.",

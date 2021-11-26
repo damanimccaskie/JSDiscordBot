@@ -1,11 +1,10 @@
-const { Command } = require('discord.js-commando');
 const snekfetch = require('snekfetch');
 const Discord = require("discord.js");
 
 module.exports = {
     name: "dog",
     description: "dog command",
-    execute: async (channel, args) => {
+    execute: async ({channel}) => {
         const main = require("../helperFunctions.js");
 
         const { body } = await snekfetch.get('https://random.dog/woof.json');

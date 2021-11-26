@@ -3,7 +3,7 @@ const Discord = require("discord.js");
 module.exports = {
     name: "pepe",
     description: "pepe command",
-    execute(channel) {
+    execute({channel}) {
         const main = require("../helperFunctions.js");
 
         let links = ["https://cdn.discordapp.com/emojis/428556352915505165.png?v=1", "https://cdn.discordapp.com/emojis/428556326482739230.png?v=1",

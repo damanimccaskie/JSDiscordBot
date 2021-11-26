@@ -1,10 +1,9 @@
 const fs = require('fs');
-const request = require("request");
 
 module.exports = {
     name: "untrack",
     description: "remove channel from the tracked list",
-    execute(channel, args) {
+    execute({channel, args}) {
         const main = require("../helperFunctions.js");
         args.shift();
 

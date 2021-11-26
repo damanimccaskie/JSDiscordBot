@@ -1,23 +1,11 @@
+const { post } = require("request-promise-native");
+
 module.exports = {
 	name: "audio",
 	description: "Music Commands List",
-	execute(channel) {
+	execute({channel}) {
 		const main = require("../helperFunctions.js");
-		// const fs = require('fs');
-		const version = "2020-04-20 11:26"
-
 		function displayHelp() {
-			//load command list from file (Command List) and display them
-			/*fs.readFile('Command List', 'utf-8', (err, data) => {
-				if (err) {
-					console.log(err);
-					main.post(channel, "Version: "+version);
-					return;
-				}
-				main.post(channel, "Version: "+version);
-				main.post(channel, data.replace(/!/g, ""));
-			});*/
-
 
 			const exampleEmbed = {
 				color: 0x0099ff,
@@ -95,6 +83,7 @@ module.exports = {
 			main.post(channel, { embed: exampleEmbed });
 
 		}
-		displayHelp();
+		// displayHelp();
+		return main.post(channel, "This command is deprecated");
 	}
 }

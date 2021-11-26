@@ -1,11 +1,10 @@
-const { Command } = require('discord.js-commando');
 const cows = require('cows');
 const rn = require('random-number');
 
 module.exports = {
     name: "cow",
     description: "cow command",
-    execute: async (channel, args) => {
+    execute: async ({channel}) => {
         const main = require("../helperFunctions.js");
 
         const options = {

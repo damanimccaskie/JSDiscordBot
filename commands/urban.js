@@ -1,9 +1,10 @@
 const Discord = require("discord.js");
-const urban = require("urban");
+const request = require("request");
+
 module.exports = {
   name: "urban",
   description: "urban dictionary command",
-  execute(channel, args) {
+  execute: async ({channel, args}) => {
     const main = require("../helperFunctions.js")
     args.shift();
 
@@ -14,18 +15,38 @@ module.exports = {
 
     let XD = args.join(" ");
 
-    urban(XD).first(json => {
-      if (!json) return main.post(channel, "No results found!")
+    let options = {
+      url: "https://api.urbandictionary.com/v0/define?page=1&term=" + XD,
+      method: "GET",
+      headers: {
+          "Accept": "application/json",
+          "User-Agent": "Mozilla/5.0 (X11; Linux i586; rv:31.0) Gecko/20100101 Firefox/71.0"
+      }
+  };
 
+  request(options, function (error, response, body) {
+      if (error) {
+          console.log(error);
+          main.post(channel, error);
+          return;
+      }
+      
+      
+      const { list } = JSON.parse(body);
+      if (!list) return main.post(channel, "No results found!");
+      console.log(list);
+      const { word, definition, thumbs_up, thumbs_down, author, example} = list[0];
       let urbEmbed = new Discord.RichEmbed()
         .setColor("00ff00")
-        .setTitle(json.word)
-        .setDescription(json.definition)
-        .addField("Upvotes", json.thumbs_up, true)
-        .addField("Downvotes", json.thumbs_down, true)
-        .setFooter(`Written by: ${json.author}`);
+        .setTitle(word)
+        .setDescription(definition)
+        .addField("Example:", example, true)
+        .addField("Upvotes\n:thumbsup:", thumbs_up, true)
+        .addField("Downvotes\n:thumbsdown:", thumbs_down, true)
+        .setFooter(`Written by: ${author}`);
 
-      main.post(channel, urbEmbed)
+      main.post(channel, urbEmbed);
+
     });
   }
 }

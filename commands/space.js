@@ -1,11 +1,12 @@
 module.exports = {
     name: "space",
     description: "space command",
-    execute(channel, args) {
+    execute({channel, args}) {
         const main = require("../helperFunctions.js");
         args = main.removeFirstArg(args);
         if (args.length < 1) {
             main.post(channel, 'You must provide text to space out!');
+            return;
         }
 
         let amount = 2;

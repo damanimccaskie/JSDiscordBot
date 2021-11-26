@@ -4,7 +4,7 @@ const math = require('mathjs');
 module.exports = {
     name: "calc",
     description: "calculator command",
-    execute(channel, args) {
+    execute({channel, args}) {
         main = require("../helperFunctions.js")
         args = main.removeFirstArg(args);
         if (!args[0]) {

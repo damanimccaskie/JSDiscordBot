@@ -1,7 +1,7 @@
 module.exports = {
     name: "flipcoin",
     description: "flipcoin command",
-    execute(channel) {
+    execute({channel}) {
         const main = require("../helperFunctions.js")
         let output = ["HEADS", "TAILS"];
 

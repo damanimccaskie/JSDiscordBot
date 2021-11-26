@@ -1,9 +1,8 @@
 module.exports = {
     name: "price",
     description: "command the price of a given cryptocurrency",
-    async execute(channel, args) {
+    async execute({channel, args}) {
         const main = require("../helperFunctions.js");
-        const request = require("request");
 
         //if user passed args to search, join them together for the url
         search = "";

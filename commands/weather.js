@@ -3,9 +3,13 @@ const weather = require("weather-js")
 module.exports = {
     name: "weather",
     description: "weather command",
-    execute(channel, args) {
+    execute({channel, args}) {
         const main = require("../helperFunctions.js")
         args = main.removeFirstArg(args);
+        if (args.length < 1) {
+            main.post(channel, "Please enter a location");
+            return;
+        }
 
         weather.find({ search: args.join(" "), degreeType: "C" }, function (err, result) {
             if (err) {

@@ -1,7 +1,7 @@
 module.exports = {
     name: "suicide",
     description: "suicide command",
-    execute(channel) {
+    execute({channel}) {
         const main = require("../helperFunctions.js")
         const { Attachment } = require("discord.js");
         main.post(channel, new Attachment("../DiscordBot/images/sui.jpg"))

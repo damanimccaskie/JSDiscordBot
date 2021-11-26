@@ -1,9 +1,9 @@
 module.exports = {
     name: "slap",
     description: "slap command",
-    execute(channel, args, all) {
+    execute({channel, message}) {
         const main = require("../helperFunctions.js");
-        let member = all.mentions.members.first();
+        let member = message.mentions.members.first();
 
         if (!member) {
             const Discord = require('discord.js');
@@ -17,7 +17,7 @@ module.exports = {
             main.post(channel, {
                 embed: {
                     color: 3447003,
-                    title: all.author.username + " bitch slapped :raised_back_of_hand: " + slapee + ", " + slapee + " is now in the hospital! :hospital:"
+                    title: message.author.username + " bitch slapped :raised_back_of_hand: " + slapee + ", " + slapee + " is now in the hospital! :hospital:"
                 }
             });
         }

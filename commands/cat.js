@@ -1,10 +1,9 @@
 var Discord = require('discord.js');
-// const Commando = require('discord.js-commando');
 const request = require('request');
 module.exports = {
     name: "cat",
     description: "cat command",
-    execute: async (channel) => {
+    execute: async ({channel}) => {
         const main = require("../helperFunctions.js");
         request('http://edgecats.net/random', function (error, response, body) {
             if (!error && response.statusCode == 200) {

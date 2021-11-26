@@ -1,11 +1,8 @@
-var Discord = require('discord.js');
 module.exports = {
     name: "ping",
     description: "ping command",
-    execute(channel) {
+    execute({channel, bot}) {
         const main = require("../helperFunctions.js")
-        main.post(channel, "Pong nigga!")
+        main.post(channel, "Pong nigga! " + Math.floor(Math.round(bot.ping)) + "ms");
     }
 }
-//`" + Math.floor(Math.round(bot.ping)) + "`ms"
-//msg.delete();

@@ -45,7 +45,7 @@ bot.on('message', function (message) {
 		var cmd = args[0].toLowerCase();
 
 		if (bot.commands.has(cmd)) //if command exist in loaded commands, execute from list
-			bot.commands.get(cmd).execute(channel, args, message);
+			bot.commands.get(cmd).execute({channel, args, message, bot});
 		else { //special case
 			found = false;
 			music = ["play", "skip", "stop", "next", "queue", "back", "details", "pause", "resume"];

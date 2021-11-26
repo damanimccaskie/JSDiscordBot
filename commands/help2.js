@@ -1,24 +1,11 @@
 module.exports = {
 	name: "help2",
 	description: "help command",
-	execute(channel) {
+	execute({channel}) {
 		const main = require("../helperFunctions.js");
-		const fs = require('fs');
-		const version = "2021-11-02 21:16"
+		const version = "2021-11-26 01:31"
 
 		function displayHelp() {
-			//load command list from file (Command List) and display them
-			/*fs.readFile('Command List', 'utf-8', (err, data) => {
-				if (err) {
-					console.log(err);
-					main.post(channel, "Version: "+version);
-					return;
-				}
-				main.post(channel, "Version: "+version);
-				main.post(channel, data.replace(/!/g, ""));
-			});*/
-
-
 			const exampleEmbed = {
 				color: 0x0099ff,
 				title: 'SRBot Commands',
@@ -84,7 +71,6 @@ module.exports = {
 						value: 'Show all music commands!',
 						inline: true,
 					},
-
 				],
 				timestamp: new Date(),
 				footer: {
@@ -93,7 +79,7 @@ module.exports = {
 				},
 			};
 
-			main.post(channel, "Version: "+version);
+			main.post(channel, "Version: " + version);
 			main.post(channel, { embed: exampleEmbed });
 
 		}

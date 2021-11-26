@@ -1,24 +1,11 @@
 module.exports = {
 	name: "help",
 	description: "help command",
-	execute(channel) {
+	execute({channel}) {
 		const main = require("../helperFunctions.js");
-		// const fs = require('fs');
-		const version = "2021-11-02 21:16"
+		const version = "2021-11-026 01:31"
 
 		function displayHelp() {
-			//load command list from file (Command List) and display them
-			/*fs.readFile('Command List', 'utf-8', (err, data) => {
-				if (err) {
-					console.log(err);
-					main.post(channel, "Version: "+version);
-					return;
-				}
-				main.post(channel, "Version: "+version);
-				main.post(channel, data.replace(/!/g, ""));
-			});*/
-
-
 			const exampleEmbed = {
 				color: 0x0099ff,
 				title: 'SRBot Commands',
@@ -39,16 +26,6 @@ module.exports = {
 						inline: false,
 					},*/
 					{
-						name: '!life',
-						value: 'Choose your life path',
-						inline: true,
-					},
-					{
-						name: '!fact',
-						value: 'Facts',
-						inline: true,
-					},
-					{
 						name: '!suicide',
 						value: 'Suicide Hotline',
 						inline: true,
@@ -64,18 +41,8 @@ module.exports = {
 						inline: true,
 					},
 					{
-						name: '!time',
-						value: 'Wink Wink',
-						inline: true,
-					},
-					{
 						name: '!ping',
 						value: 'replies pong',
-						inline: true,
-					},
-					{
-						name: '!prize',
-						value: 'Special Prize',
 						inline: true,
 					},
 					{
@@ -139,11 +106,6 @@ module.exports = {
 						inline: true,
 					},
 					{
-						name: '!sigh',
-						value: 'Sighs',
-						inline: true,
-					},
-					{
 						name: '!bin',
 						value: 'Decimal to Binary',
 						inline: true,
@@ -159,11 +121,15 @@ module.exports = {
 						inline: true,
 					},
 					{
+						name: '!lofi',
+						value: 'Interact with lofi section of the bot\nIncludes play, pause, resume and stop functions',
+						inline: true,
+					},
+					{
 						name: '!help2',
 						value: 'Show Page 2 of Commands..',
 						inline: true,
-					},
-
+					}
 				],
 				timestamp: new Date(),
 				footer: {
@@ -172,7 +138,7 @@ module.exports = {
 				},
 			};
 
-			main.post(channel, "Version: "+version);
+			main.post(channel, "Version: " + version);
 			main.post(channel, { embed: exampleEmbed });
 
 		}
