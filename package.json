@@ -25,6 +25,7 @@
     "fs": "0.0.1-security",
     "give-me-a-joke": "^0.1.2",
     "jimp": "^0.9.8",
+    "mathjs": "^9.3.2",
     "node-opus": "^0.3.3",
     "opusscript": "0.0.7",
     "random-number": "0.0.9",

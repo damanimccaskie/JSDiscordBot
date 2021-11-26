@@ -1,5 +1,3 @@
-const { post } = require("request-promise-native");
-
 module.exports = {
 	name: "audio",
 	description: "Music Commands List",
