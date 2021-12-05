@@ -13,6 +13,12 @@ logger.add(new logger.transports.Console, {
 });
 logger.level = 'debug';
 
+try {
+	global.config = JSON.parse(fs.readFileSync("config.json"));
+} catch (e) {
+	console.log(e);
+}
+
 // Initialize Discord Bot
 let bot = new Discord.Client();
 bot.login(auth.token);

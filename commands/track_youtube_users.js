@@ -1,33 +1,42 @@
 const fs = require('fs');
 const request = require("request");
+const MAX_CHANNELS = 8;
 
 let checked = [];
 
 module.exports = {
     name: "track",
-    description: "get latest videos from a youtuber",
-    execute({channel, args}) {
+    description: "get latest videos from a youtube channel",
+    execute({ channel, args }) {
         const main = require("../helperFunctions.js");
 
         //if user passed args to search, join them together for the url
         args.shift();
         let search = args
-                        .reduce((prevValue, curValue) => prevValue + curValue + "+", "")
+                        .reduce((prevValue, curValue) => prevValue + curValue + " ", "")
                         .trim();
-        search = search.substring(0, search.length - 1);
         
         if (search.length < 1) {
             main.post(channel, "Need to provide a search");
             return;
         }
 
+        if (!global.config) {
+            main.post(channel, "Dont know the rss server");
+            return;
+        }
+
+        main.post(channel, "Searching");
+
         const options = {
-            url: "https://www.youtube.com/results?search_query=" + search,
-            method: "GET",
+            url: global.config.rss_server + "/api/channels",
+            method: "POST",
             headers: {
-                "Accept": "text/html",
+                "Accept": "application/json; charset=utf-8",
                 "User-Agent": "Mozilla/5.0 (X11; Linux i586; rv:31.0) Gecko/20100101 Firefox/71.0"
-            }
+            },
+            body: { search },
+            json: true
         };
 
         request(options, (error, response, body) => {
@@ -36,44 +45,54 @@ module.exports = {
                 return;
             }
 
-            const channelRegex = RegExp('\/channel\/([^"]+)');
-            const match = body.match(channelRegex);
+            if (response.statusCode != 200) {
+                main.post(channel, body);
+                return;
+            }
 
-            let id = match[1];
+            let channels = body;
+            if (channels.length < 1) {
+                main.post(channel, "Didn't find any results for "+ search + " sorry");
+                return;
+            }
 
-            const xmlOptions = {
-                url: "https://www.youtube.com/feeds/videos.xml?channel_id=" + id,
-                method: "GET",
-                headers: {
-                    "Accept": "text/html",
-                    "User-Agent": "Mozilla/5.0 (X11; Linux i586; rv:31.0) Gecko/20100101 Firefox/71.0"
+            const { RichEmbed } = require("discord.js");
+            const optionsEmbed = new RichEmbed().setColor("#3158f9")
+                .setTitle("Choose a channel by entering a number");
+
+            for (let i = 0; i < channels.length && i < MAX_CHANNELS; i++) {
+                optionsEmbed.addField("Channel " + (i + 1).toString(), channels[i].name);
+                optionsEmbed.addField("Thumbnail", channels[i].thumbnail);
+            }
+            optionsEmbed.addField("Exit", "exit");
+
+            main.post(channel, optionsEmbed);
+
+            channel.awaitMessages(m => (m.content > 0 && m.content < channels.length) || m.content === 'exit', {
+                max: 2,
+                time: 45000,
+                errors: ['time'] 
+            }).then(collected => {
+                let choice = parseInt(collected.first().content) - 1;
+                if (choice > -1 && choice < channels.length) {
+                    const addEmbed = new RichEmbed().setColor("#f98331");
+                    addEmbed
+                        .setThumbnail(channels[choice].thumbnail)
+                        .setTitle("Adding Channel to db")
+                        .setDescription("Adding " + channels[choice].name + " to tracking db")
+                        .addField("Channel url", channels[choice].channel)
+                        .addField("Feed url", channels[choice].feed);
+                    main.post(channel, addEmbed);
+    
+                    addToDb({
+                        Name: channels[choice].name,
+                        Thumbnail: channels[choice].thumb,
+                        Channel: channels[choice].channel,
+                        Feed: channels[choice].feed,
+                        DiscordChannel: channel.id // rmr which channel the youtuber was ask to track from
+                    });   
                 }
-            };
-
-            request(xmlOptions, (error, response, body) => {
-                const entryRegex = RegExp("<entry>(.+?)<\/entry>", "si");
-                const nameRegex = RegExp("<name>(.+?)<\/name>", "si");
-                const mediaRegex = RegExp("media:thumbnail url=[\"'](.+jpg)[\"']", "i");
-                let entries = body.match(entryRegex);
-                let name = body.match(nameRegex)[1];
-                let thumb = entries[1].match(mediaRegex)[1];
-
-                const { RichEmbed } = require("discord.js");
-                const embed = new RichEmbed().setColor("#085cfb")
-
-                embed.setThumbnail(thumb).setTitle("Track results (adding to db)").setDescription("Youtube users found from searching " + search);
-                embed.addField("Youtuber Name", name).addField("Channel url", "https://www.youtube.com/channel/" + id);
-                embed.addField("Feed url", "https://www.youtube.com/feeds/videos.xml?channel_id=" + id);
-                main.post(channel, embed);
-
-                addToDb({
-                    Name: name,
-                    Thumbnail: thumb,
-                    Channel: "https://www.youtube.com/channel/" + id,
-                    Feed: "https://www.youtube.com/feeds/videos.xml?channel_id=" + id,
-                    DiscordChannel: channel.id // rmr which channel the youtuber was ask to track from
-                });
-            });
+            }).catch(collected => main.post(channel, 'Guess you changed your mind'));
         });
     },
     getUpdates: (channels) => {
@@ -94,7 +113,7 @@ module.exports = {
             let records = JSON.parse(data);
             records.forEach(record => {
                 const options = {
-                    url: record.Feed,
+                    url: global.config.rss_server + "/api/videos/" + record.Feed.split("=")[1],
                     method: "GET",
                     headers: {
                         "Accept": "text/html",
@@ -102,20 +121,16 @@ module.exports = {
                     }
                 };
                 request(options, (error, response, body) => {
-                    const entryRegex = RegExp("<entry>(.+?)<\/entry>", "sig");
-                    const videoRegex = RegExp("yt:video:([^<]+)", "i");
-                    const titleRegex = RegExp("title>([^<]+)", "i");
-                    const thumbRegex = RegExp("media:thumbnail url=['\"](.+?)['\"]", "i");
-    
-                    let videos = [];
-                    let entries = Array.from(body.matchAll(entryRegex), i => i[1]);
-                    entries.forEach(entry => {
-                        videos.push({
-                            "id": entry.match(videoRegex)[1],
-                            "title": entry.match(titleRegex)[1],
-                            "thumb": entry.match(thumbRegex)[1],
-                        })
-                    });
+                    if (error) {
+                        console.log(error);
+                        return;
+                    }
+                    if (response.statusCode !== 200) {
+                        main.post(channel, body);
+                        return;
+                    }
+
+                    let videos = JSON.parse(body);
 
                     if (!checked.includes(videos[0].id)) {
                         const channel = channels.get(record.DiscordChannel); // get the discord channel to post to

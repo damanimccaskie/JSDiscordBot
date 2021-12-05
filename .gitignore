@@ -18,3 +18,7 @@ yarn-error.log*
 # dotenv environment variables file
 .env
 .env.test
+
+track.json
+config.json
+checked.json
