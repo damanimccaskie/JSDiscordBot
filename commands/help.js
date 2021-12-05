@@ -3,7 +3,7 @@ module.exports = {
 	description: "help command",
 	execute({channel}) {
 		const main = require("../helperFunctions.js");
-		const version = "2021-11-026 01:31"
+		const version = "2021-12-05 18:56"
 
 		function displayHelp() {
 			const exampleEmbed = {

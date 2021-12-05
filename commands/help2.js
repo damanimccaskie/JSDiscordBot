@@ -3,7 +3,7 @@ module.exports = {
 	description: "help command",
 	execute({channel}) {
 		const main = require("../helperFunctions.js");
-		const version = "2021-11-26 01:31"
+		const version = "2021-12-05 18:56"
 
 		function displayHelp() {
 			const exampleEmbed = {
@@ -60,11 +60,11 @@ module.exports = {
                         inline: true,
                     }, {
                         name: "!track [arg]",
-                        value: "Setup a listener for new videos from specified youtuber",
+                        value: "Setup a listener for new videos from specified youtube channel",
                         inline: true,
                     }, {
                         name: "!untrack [arg]",
-                        value: "Remove listener for new videos from specified youtuber",
+                        value: "Remove listener for new videos from specified youtube channel",
                         inline: true,
                     }, {
 						name: '!audio',
