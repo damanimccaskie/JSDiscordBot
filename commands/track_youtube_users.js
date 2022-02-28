@@ -132,6 +132,8 @@ module.exports = {
 
                     let videos = JSON.parse(body);
 
+                    if (videos.length < 1) return; // this usually doesnt happen, but if youtube breaks it will
+
                     if (!checked.includes(videos[0].id)) {
                         const channel = channels.get(record.DiscordChannel); // get the discord channel to post to
                         main.post(channel, "https://www.youtube.com/watch?v=" + videos[0].id)
