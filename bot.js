@@ -1,7 +1,6 @@
 const fs = require('fs')
 var Discord = require('discord.js');
 var logger = require('winston');
-var auth = require('./auth.json');
 const main = require("./helperFunctions.js")
 
 const signal = '!';
@@ -13,15 +12,15 @@ logger.add(new logger.transports.Console, {
 });
 logger.level = 'debug';
 
-try {
-	global.config = JSON.parse(fs.readFileSync("config.json"));
-} catch (e) {
-	console.log(e);
-}
+//environment variables configuration
+const dotenv = require("dotenv");
+dotenv.config();
+
+global.rss_server = process.env.RSS_SERVER;
 
 // Initialize Discord Bot
 let bot = new Discord.Client();
-bot.login(auth.token);
+bot.login(process.env.TOKEN);
 
 //dynamically load commands (js command files)
 bot.commands = new Map();

@@ -21,7 +21,7 @@ module.exports = {
             return;
         }
 
-        if (!global.config) {
+        if (!global.rss_server) {
             main.post(channel, "Dont know the rss server");
             return;
         }
@@ -29,7 +29,7 @@ module.exports = {
         main.post(channel, "Searching");
 
         const options = {
-            url: global.config.rss_server + "/api/channels",
+            url: global.rss_server + "/api/channels",
             method: "POST",
             headers: {
                 "Accept": "application/json; charset=utf-8",
@@ -113,7 +113,7 @@ module.exports = {
             let records = JSON.parse(data);
             records.forEach(record => {
                 const options = {
-                    url: global.config.rss_server + "/api/videos/" + record.Feed.split("=")[1],
+                    url: global.rss_server + "/api/videos/" + record.Feed.split("=")[1],
                     method: "GET",
                     headers: {
                         "Accept": "text/html",

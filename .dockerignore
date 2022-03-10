@@ -1,0 +1,28 @@
+# Ignore the logs directory
+logs/
+*.log
+
+# Ignoring git and cache folders
+.git
+.cache
+
+# Ignoring all the markdown and docker files
+*.md
+Dockerfile
+
+# dependencies
+node_modules/
+
+# misc
+.env
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+auth.json
+*yml
+tests/
+
+package-lock.json
+yarn.lock
