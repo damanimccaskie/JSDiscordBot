@@ -1,6 +1,8 @@
 const fs = require('fs');
 const request = require("request");
 const MAX_CHANNELS = 8;
+const TRACK_FILE = "data/track.json";
+const CHECKED_FILE = "data/checked.json";
 
 let checked = [];
 
@@ -105,7 +107,7 @@ module.exports = {
 
         // read add the channels that have been added for tracking
         // and look for the latest video
-        fs.readFile("track.json", (err, data) => {
+        fs.readFile(TRACK_FILE, (err, data) => {
             if(err) {
                 console.log(err);
                 return;
@@ -152,10 +154,10 @@ const addToDb = (record) => {
     // write the record to db to keep track of posts
 
     // loadDB and add record then write back to file
-    fs.readFile("track.json", (err, data) => {
+    fs.readFile(TRACK_FILE, (err, data) => {
         if (err) {
             // assume file has not been created yet
-            fs.writeFileSync("track.json", JSON.stringify([record]));
+            fs.writeFileSync(TRACK_FILE, JSON.stringify([record]));
             console.log("Created the database");
             return;
         }
@@ -163,19 +165,19 @@ const addToDb = (record) => {
         // if record is not already in the db, add it
         if (records.filter(i => i.Name == record.Name && i.DiscordChannel != record.DiscordChannel).length < 1) {
             records.push(record);
-            fs.writeFileSync("track.json", JSON.stringify(records));
+            fs.writeFileSync(TRACK_FILE, JSON.stringify(records));
             console.log("Updated the database");
         }
     })
 }
 
 const storeChecked = () => {
-    fs.writeFileSync("checked.json", JSON.stringify(checked));
+    fs.writeFileSync(CHECKED_FILE, JSON.stringify(checked));
 }
 
 const loadChecked = () => {
     try {
-        let data = fs.readFileSync("checked.json");
+        let data = fs.readFileSync(CHECKED_FILE);
         return JSON.parse(data);
     } catch (e) {
         console.log("Failed to load checked, may be first time running");

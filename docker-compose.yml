@@ -2,6 +2,12 @@ version: '3.1'
 services:
   app:
     image: 'jsbot'
+    build: .
+    container_name: jsbot
     restart: unless-stopped
     environment:
       TOKEN: $TOKEN
+      RSS_SERVER: $RSS_SERVER
+    network_mode: host
+    volumes:
+      - ./bot_data:/home/jsbot/data

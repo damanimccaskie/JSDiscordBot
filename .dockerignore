@@ -24,5 +24,6 @@ auth.json
 *yml
 tests/
 
-package-lock.json
-yarn.lock
+track.json
+config.json
+checked.json
