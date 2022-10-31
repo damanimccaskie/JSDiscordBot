@@ -1,13 +1,11 @@
-FROM node:14.18.1-alpine
+FROM node:16.18.0-alpine
 
 RUN mkdir -p /home/jsbot
 WORKDIR /home/jsbot
 
 COPY package.json .
 
-RUN apk add --no-cache --virtual .gyp python make g++
-
-RUN npm install --production && apk del .gyp
+RUN npm install --omit=dev
 
 ENV NODE_ENV=production
 
