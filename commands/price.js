@@ -10,6 +10,9 @@ module.exports = {
             search += args[i] + " ";
         search = search.trim().substring(0, search.length - 1);
 
+        if (search.length < 1)
+            return main.post(channel, "Provide a coin to get the price of");
+
         const CoinGecko = require('coingecko-api');
         const CoinGeckoClient = new CoinGecko();
 

@@ -1,8 +1,6 @@
 const fs = require('fs');
 const request = require("request");
 const MAX_CHANNELS = 8;
-const TRACK_FILE = "data/track.json";
-const CHECKED_FILE = "data/checked.json";
 
 let checked = [];
 
@@ -58,8 +56,8 @@ module.exports = {
                 return;
             }
 
-            const { RichEmbed } = require("discord.js");
-            const optionsEmbed = new RichEmbed().setColor("#3158f9")
+            const { MessageEmbed } = require("discord.js");
+            const optionsEmbed = new MessageEmbed().setColor("#3158f9")
                 .setTitle("Choose a channel by entering a number");
 
             for (let i = 0; i < channels.length && i < MAX_CHANNELS; i++) {
@@ -71,13 +69,13 @@ module.exports = {
             main.post(channel, optionsEmbed);
 
             channel.awaitMessages(m => (m.content > 0 && m.content < channels.length) || m.content === 'exit', {
-                max: 2,
+                maxProcessed: 2,
                 time: 45000,
                 errors: ['time'] 
             }).then(collected => {
                 let choice = parseInt(collected.first().content) - 1;
                 if (choice > -1 && choice < channels.length) {
-                    const addEmbed = new RichEmbed().setColor("#f98331");
+                    const addEmbed = new MessageEmbed().setColor("#f98331");
                     addEmbed
                         .setThumbnail(channels[choice].thumbnail)
                         .setTitle("Adding Channel to db")
@@ -107,7 +105,7 @@ module.exports = {
 
         // read add the channels that have been added for tracking
         // and look for the latest video
-        fs.readFile(TRACK_FILE, (err, data) => {
+        fs.readFile(global.TRACK_FILE, (err, data) => {
             if(err) {
                 console.log(err);
                 return;
@@ -154,10 +152,10 @@ const addToDb = (record) => {
     // write the record to db to keep track of posts
 
     // loadDB and add record then write back to file
-    fs.readFile(TRACK_FILE, (err, data) => {
+    fs.readFile(global.TRACK_FILE, (err, data) => {
         if (err) {
             // assume file has not been created yet
-            fs.writeFileSync(TRACK_FILE, JSON.stringify([record]));
+            fs.writeFileSync(global.TRACK_FILE, JSON.stringify([record]));
             console.log("Created the database");
             return;
         }
@@ -165,19 +163,19 @@ const addToDb = (record) => {
         // if record is not already in the db, add it
         if (records.filter(i => i.Name == record.Name && i.DiscordChannel != record.DiscordChannel).length < 1) {
             records.push(record);
-            fs.writeFileSync(TRACK_FILE, JSON.stringify(records));
+            fs.writeFileSync(global.TRACK_FILE, JSON.stringify(records));
             console.log("Updated the database");
         }
     })
 }
 
 const storeChecked = () => {
-    fs.writeFileSync(CHECKED_FILE, JSON.stringify(checked));
+    fs.writeFileSync(global.CHECKED_FILE, JSON.stringify(checked));
 }
 
 const loadChecked = () => {
     try {
-        let data = fs.readFileSync(CHECKED_FILE);
+        let data = fs.readFileSync(global.CHECKED_FILE);
         return JSON.parse(data);
     } catch (e) {
         console.log("Failed to load checked, may be first time running");

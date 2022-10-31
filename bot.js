@@ -30,10 +30,23 @@ for (i = 0; i < cmdFiles.length; i++) {
 	bot.commands.set(cmd.name, cmd);
 }
 
+const TRACK_FILE = __dirname + "/data/track.json";
+const CHECKED_FILE = __dirname + "/data/checked.json";
+
 bot.on('ready', function (message, evt) {
 	logger.info('Connected');
 	logger.info('Logged in as: ');
 	logger.info(bot.user.username + ' - (' + bot.user.id + ')');
+
+	global.TRACK_FILE = TRACK_FILE;
+	global.CHECKED_FILE = CHECKED_FILE;
+
+	// if not exist, create the data dir
+	if (!fs.existsSync("data")) {
+		fs.mkdirSync("data");
+		logger.info("Initialized the data directory");
+	}
+
 	const interval = 10 * 60 * 1000; // 10 mins
 	setInterval(() => bot.commands.get("track").getUpdates(bot.channels), interval);
 });
@@ -50,14 +63,14 @@ bot.on('message', function (message) {
 		var cmd = args[0].toLowerCase();
 
 		if (bot.commands.has(cmd)) //if command exist in loaded commands, execute from list
-			bot.commands.get(cmd).execute({channel, args, message, bot});
+			bot.commands.get(cmd).execute({ channel, args, message, bot });
 		else { //special case
 			found = false;
 			music = ["play", "skip", "stop", "next", "queue", "back", "details", "pause", "resume"];
 			for (i = 0; i < music.length; i++)
 				if (cmd === music[i]) {
 					found = true;
-					bot.commands.get("music").execute(channel, args, message);
+					bot.commands.get("music").execute({ channel, args, message });
 				}
 			if (!found)
 				main.post(channel, "Not sure I understand what it is you want...");

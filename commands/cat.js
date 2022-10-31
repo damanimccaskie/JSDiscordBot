@@ -7,7 +7,7 @@ module.exports = {
         const main = require("../helperFunctions.js");
         request('http://edgecats.net/random', function (error, response, body) {
             if (!error && response.statusCode == 200) {
-                let emb = new Discord.RichEmbed()
+                let emb = new Discord.MessageEmbed()
                     .setImage(body)
                     .setColor("#00ff00")
                     .setTitle("Here is your random cat")

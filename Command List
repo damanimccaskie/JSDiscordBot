@@ -12,7 +12,6 @@ General Commands
 !help - gives this list of commands
 !clear [arg] - will clear arg number of msgs (arg can be null...will default to 100)
 !image - generate random image
-!meme - generate random meme
 !lenny - lenny face ( ͡° ͜ʖ ͡°)
 !fortune - ask the bot for your fortune
 !flipcoin - quick heads or tails
@@ -28,7 +27,6 @@ General Commands
 !cat - display random cat pic
 !cow
 !dog
-!joke
 !pepe
 !urban - search urban dictionary
 !weather - get weather conditions of a specified location

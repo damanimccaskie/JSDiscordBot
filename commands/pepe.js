@@ -14,7 +14,7 @@ module.exports = {
 
         let link = links[Math.floor((Math.random() * links.length))];
 
-        let pepe = new Discord.RichEmbed()
+        let pepe = new Discord.MessageEmbed()
             .setColor("#00ff00")
             .setImage(link);
 

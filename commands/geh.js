@@ -3,8 +3,8 @@ module.exports = {
     description: "geh command",
     execute({channel}) {
         const main = require("../helperFunctions.js")
-        const { Attachment } = require("discord.js");
+        const { MessageAttachment } = require("discord.js");
         // upload file
-        main.post(channel, new Attachment("../DiscordBot/images/geh.gif"));
+        main.post(channel, new MessageAttachment(__dirname + "/../images/geh.gif"));
     }
 }

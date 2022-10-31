@@ -38,7 +38,7 @@ module.exports = {
         args = main.removeFirstArg(args);
 
         if (args.length < 1) {
-            let instructionsEmbed = new Discord.RichEmbed()
+            let instructionsEmbed = new Discord.MessageEmbed()
                 .setColor("00cdff")
                 .setTitle("Lofi")
                 .setDescription("Choose a lofi station to listen to")
@@ -81,7 +81,7 @@ const play = (search, message, channel) => {
         return;
     }
 
-    if (!message.member.voiceChannel) {
+    if (!message.member.voice.channel) {
         main.post(channel, "You need to be in the voice channel to have me play music");
         return;
     }
@@ -96,12 +96,12 @@ const play = (search, message, channel) => {
     }
 
     let server = servers[message.guild.id];
-    if (!server.active) message.member.voiceChannel.join().then((connection) => {
-        server.dispatcher = connection.playStream(choice.url, { seek: 0, volume: 1 });
+    if (!server.active) message.member.voice.channel.join().then((connection) => {
+        server.dispatcher = connection.play(choice.url, { seek: 0, volume: 1 });
         server.active = true;
         main.post(channel, "Playing " + choice.name);
         
-        server.dispatcher.on("end", () => {
+        server.dispatcher.on("finish", () => {
             server.active = false;
             connection.disconnect();
         })
@@ -112,7 +112,7 @@ const stop = (message, channel) => {
     if (!activeCheck(message, channel)) return;
 
     let server = servers[message.guild.id];
-    server.dispatcher.end();
+    server.dispatcher.destroy();
     server.active = false;
 }
 
@@ -120,10 +120,13 @@ const pause = (message, channel) => {
     if (!activeCheck(message, channel)) return;
 
     let server = servers[message.guild.id];
+    main.post(channel, "Pause currently not functioning correctly :(");
+    return;
+
     if (server.dispatcher.paused)
         main.post(channel, "The track is already paused");
     else {
-        server.dispatcher.pause();
+        server.dispatcher.pause(true);
         main.post(channel, "Pausing music");
     }
 }

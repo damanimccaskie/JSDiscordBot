@@ -8,7 +8,7 @@ module.exports = {
         const main = require("../helperFunctions.js");
 
         const { body } = await snekfetch.get('https://random.dog/woof.json');
-        const embed = new Discord.RichEmbed()
+        const embed = new Discord.MessageEmbed()
             .setColor("#00ff00")
             .setImage(body.url);
 

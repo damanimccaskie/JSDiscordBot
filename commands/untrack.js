@@ -13,7 +13,7 @@ module.exports = {
         if (search.length > 0) {
             let channels = loadTrack();
             let originalCount = channels.length;
-            channels = channels.filter(item => item["Name"] !== search);
+            channels = channels.filter(item => item["Name"].toLowerCase() !== search.toLowerCase());
             if (originalCount > channels.length) {
                 storeTrack(channels);
                 main.post(channel, "Removed " + search);
@@ -23,12 +23,12 @@ module.exports = {
 }
 
 const storeTrack = (trackArr) => {
-    fs.writeFileSync("track.json", JSON.stringify(trackArr));
+    fs.writeFileSync(global.TRACK_FILE , JSON.stringify(trackArr));
 }
 
 const loadTrack = () => {
     try {
-        let data = fs.readFileSync("track.json");
+        let data = fs.readFileSync(global.TRACK_FILE );
         return JSON.parse(data);
     } catch (e) {
         console.log("Failed to load checked, may be first time running");

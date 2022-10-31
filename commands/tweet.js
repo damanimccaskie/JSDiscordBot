@@ -13,19 +13,21 @@ module.exports = {
           image.quality(84)                 // set JPEG quality
           image.print(font, 43, 107, args.join(" "), 601);        // print a message on an image
 
-          let outputfile = "./output/" + Math.random().toString(36).substr(2, 5) + "tweet." + image.getExtension(); // create a random name for the output file
-          image.write(outputfile);
-          const { Attachment } = require("discord.js");
-          // upload file
-          main.post(channel, new Attachment(outputfile));
+          const outputfile = "./data/" + Math.random().toString(36).substr(2, 5) + "tweet." + image.getExtension(); // create a random name for the output file
+          image.write(outputfile, () => {
+            const { MessageAttachment } = require("discord.js");
+            
+            // upload file
+            main.post(channel, new MessageAttachment(outputfile));
 
-          setTimeout(function () {
-            fs.unlink(outputfile, function (err) { //delete file
-              if (err) throw err;
-              // if no error, file has been deleted successfully
-              console.log('File deleted!');
-            })
-          }, 3000); //need to delay deleting file to give time for upload (js async bad)
+            setTimeout(() => {
+              fs.unlink(outputfile, function (err) { //delete file
+                if (err) throw err;
+                // if no error, file has been deleted successfully
+                console.log('File deleted!');
+              })
+            }, 3000); //need to delay deleting file to give time for upload (js async bad)
+          });
 
         });
       }).catch(function (err) {
@@ -33,7 +35,6 @@ module.exports = {
         console.error("Error: " + err);
       });
     } else {
-      //msg.delete();
       main.post(channel, "Enter a message!");
     }
   }

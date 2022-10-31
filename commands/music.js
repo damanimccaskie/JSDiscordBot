@@ -94,7 +94,7 @@ module.exports = {
             if (server.dispatcher.paused)
                 main.post(channel, "The track is already paused");
             else {
-                server.dispatcher.pause();
+                server.dispatcher.pause(true);
                 main.post(channel, "Pausing " + server.queue[server.cur].title);
             }
         }
@@ -113,7 +113,7 @@ module.exports = {
             server.dispatcher = connection.playStream(item.url, { seek: 0, volume: 1 });
             main.post(channel, "Playing " + item.title);
 
-            server.dispatcher.on("end", function () {
+            server.dispatcher.on("finish", function () {
                 if (server.queue[server.cur + 1]) { //if items left in queue
                     server.cur++; //increment to point to next item
                     play(connection, server);
@@ -192,8 +192,8 @@ module.exports = {
                     break;
             }
 
-            const { RichEmbed } = require("discord.js");
-            const embed = new RichEmbed().setColor("#e9f931")
+            const { MessageEmbed } = require("discord.js");
+            const embed = new MessageEmbed().setColor("#e9f931")
                 .setTitle("Choose a song by entering a number");
 
 
@@ -218,8 +218,8 @@ module.exports = {
         function viewDetails(server) {
             if (server && server.queue && server.queue[server.cur]) {
                 let item = server.queue[server.cur];
-                const { RichEmbed } = require("discord.js");
-                const embed = new RichEmbed().setColor("#e9f931")
+                const { MessageEmbed } = require("discord.js");
+                const embed = new MessageEmbed().setColor("#e9f931")
 
                 embed.setThumbnail(item.thumbnail.thumbnails[0].url).setTitle(item.title).setDescription(convertTime(item.length));
                 main.post(channel, embed);

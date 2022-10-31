@@ -34,9 +34,8 @@ module.exports = {
       
       const { list } = JSON.parse(body);
       if (!list) return main.post(channel, "No results found!");
-      console.log(list);
       const { word, definition, thumbs_up, thumbs_down, author, example} = list[0];
-      let urbEmbed = new Discord.RichEmbed()
+      let urbEmbed = new Discord.MessageEmbed()
         .setColor("00ff00")
         .setTitle(word)
         .setDescription(definition)

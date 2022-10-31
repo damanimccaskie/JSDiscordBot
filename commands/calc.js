@@ -20,7 +20,7 @@ module.exports = {
             return;
         }
 
-        const embed = new Discord.RichEmbed()
+        const embed = new Discord.MessageEmbed()
             .setColor(0xffffff)
             .setTitle("Math Calculation")
             .addField('Input', `\`\`\`js\n${args.join(" ")}\`\`\``)

@@ -3,7 +3,7 @@ module.exports = {
 	description: "help command",
 	execute({channel}) {
 		const main = require("../helperFunctions.js");
-		const version = "2022-04-04 09:36"
+		const version = "2022-10-30 08:12"
 
 		function displayHelp() {
 			const exampleEmbed = {
@@ -33,11 +33,6 @@ module.exports = {
 					{
 						name: '!dog',
 						value: 'Random dog picture',
-						inline: true,
-					},
-					{
-						name: '!joke',
-						value: 'Random joke generator',
 						inline: true,
 					},
 					{

@@ -14,7 +14,6 @@ Bot Used Exclusively For The S-Race Discord Server, Will Be Available For More S
 <li>!help - gives list of commands</li>
 <li>!clear [arg] - will clear arg number of msgs</li>
 <li>!image - generate random image</li>
-<li>!meme - generate random meme</li>
 <li>!lenny - lenny face ( ͡° ͜ʖ ͡°)</li>
 <li>!fortune - ask the bot for your fortune</li>
 <li>!flipcoin - quick heads or tails</li>
@@ -29,7 +28,6 @@ Bot Used Exclusively For The S-Race Discord Server, Will Be Available For More S
 <li>!cat - display random cat pic</li>
 <li>!cow</li>
 <li>!dog</li>
-<li>!joke</li>
 <li>!pepe</li>
 <li>!urban - search urban dictionary</li>
 <li>!weather - get weather conditions in a specified location</li>

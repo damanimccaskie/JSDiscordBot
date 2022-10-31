@@ -28,7 +28,7 @@ module.exports = {
             var location = result[0].location //This is a variable for the location part of the JSON Output
 
             //Sends weather log in embed
-            let embed = new Discord.RichEmbed()
+            let embed = new Discord.MessageEmbed()
                 .setDescription(`**${current.skytext}**`) //How the sky looks like
                 .setAuthor(`Weather for ${current.observationpoint}`) //Shows the current location of the weater
                 .setThumbnail(current.imageUrl) //Sets thumbnail of the embed

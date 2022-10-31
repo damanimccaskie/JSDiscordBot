@@ -7,7 +7,7 @@ module.exports = {
 
         if (!member) {
             const Discord = require('discord.js');
-            let embed = new Discord.RichEmbed();
+            let embed = new Discord.MessageEmbed();
             embed.setTitle("Mention a valid member of this server!");
             embed.setColor(3447003);
             main.post(channel, embed);
