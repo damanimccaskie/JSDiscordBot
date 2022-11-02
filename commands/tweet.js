@@ -15,10 +15,9 @@ module.exports = {
 
           const outputfile = "./data/" + Math.random().toString(36).substr(2, 5) + "tweet." + image.getExtension(); // create a random name for the output file
           image.write(outputfile, () => {
-            const { MessageAttachment } = require("discord.js");
             
             // upload file
-            main.post(channel, new MessageAttachment(outputfile));
+            main.post({ channel, files: [outputfile] });
 
             setTimeout(() => {
               fs.unlink(outputfile, function (err) { //delete file
@@ -35,7 +34,7 @@ module.exports = {
         console.error("Error: " + err);
       });
     } else {
-      main.post(channel, "Enter a message!");
+      main.post({ channel, msg: "Enter a message!" });
     }
   }
 }

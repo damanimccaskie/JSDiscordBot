@@ -8,7 +8,7 @@ module.exports = {
         main = require("../helperFunctions.js")
         args = main.removeFirstArg(args);
         if (!args[0]) {
-            main.post(channel, "Please input a calculation.");
+            main.post({ channel, msg: "Please input a calculation." });
             return;
         }
 
@@ -16,7 +16,7 @@ module.exports = {
         try {
             resp = math.evaluate(args.join(" "));
         } catch (e) {
-            main.post(channel, "Sorry, please input a valid calculation.");
+            main.post({ channel, msg: "Sorry, please input a valid calculation." });
             return;
         }
 
@@ -26,6 +26,6 @@ module.exports = {
             .addField('Input', `\`\`\`js\n${args.join(" ")}\`\`\``)
             .addField('Output', `\`\`\`js\n${resp}\`\`\``)
 
-        main.post(channel, embed);
+        main.post({ channel, embeds: [embed] });
     }
 }

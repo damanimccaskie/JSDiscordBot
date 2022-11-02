@@ -8,7 +8,7 @@ module.exports = {
     execute({channel, args, message}) {
         let main = require("../helperFunctions.js")
 
-        return main.post(channel, "This command is deprecated");
+        return main.post({ channel, msg: "This command is deprecated" });
 
         if (args.length < 1) {
             // i dont think execution would ever reach here

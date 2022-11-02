@@ -11,6 +11,6 @@ module.exports = {
 
     for (let i = 0; i < args.length; i++)
       flipped.push(flip(args[i]));
-    main.post(channel, flipped.join(" "));
+    main.post({ channel, msg: flipped.join(" ") });
   }
 }

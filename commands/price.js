@@ -11,7 +11,7 @@ module.exports = {
         search = search.trim().substring(0, search.length - 1);
 
         if (search.length < 1)
-            return main.post(channel, "Provide a coin to get the price of");
+            return main.post({ channel, msg: "Provide a coin to get the price of" });
 
         const CoinGecko = require('coingecko-api');
         const CoinGeckoClient = new CoinGecko();
@@ -32,8 +32,8 @@ module.exports = {
                     response += "\n24hr Volume (usd): " + data.data[search].usd_24h_vol;
                 if (data.data[search].usd_24h_change) 
                     response += "\n24hr Change (%): " + data.data[search].usd_24h_change;
-                main.post(channel, response)
-            } else main.post(channel, "Couldnt find coin: "+search);
+                main.post({ channel, msg: response })
+            } else main.post({ channel, msg: "Couldnt find coin: " + search });
         } finally {
             return data;
         }

@@ -44,7 +44,7 @@ module.exports = {
         .addField("Downvotes\n:thumbsdown:", thumbs_down, true)
         .setFooter(`Written by: ${author}`);
 
-      main.post(channel, urbEmbed);
+      main.post({ channel, embeds: [urbEmbed] });
 
     });
   }

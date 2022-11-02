@@ -78,10 +78,10 @@ module.exports = {
 				},
 			};
 
-			main.post(channel, { embed: exampleEmbed });
+			main.post({ channel, embeds: [exampleEmbed] });
 
 		}
 		// displayHelp();
-		return main.post(channel, "This command is deprecated");
+		return main.post({ channel, msg: "This command is deprecated" });
 	}
 }

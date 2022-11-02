@@ -12,7 +12,7 @@ module.exports = {
                     .setColor("#00ff00")
                     .setTitle("Here is your random cat")
 
-                main.post(channel, emb)
+                main.post({ channel, embeds: [emb] })
             }
         });
     }

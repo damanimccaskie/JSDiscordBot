@@ -5,7 +5,7 @@ module.exports = {
         const main = require("../helperFunctions.js")
         args = main.removeFirstArg(args)
         if (args.length == 0) {
-            main.post(channel, "Finding out a fortune for nothing, great.")
+            main.post({ channel, msg: "Finding out a fortune for nothing, great." })
             return;
         }
 
@@ -32,6 +32,6 @@ module.exports = {
             "Very doubtful.",
         ];
 
-        main.post(channel, fortunes[Math.floor(Math.random() * fortunes.length)]);
+        main.post({ channel, msg: fortunes[Math.floor(Math.random() * fortunes.length)] });
     }
 }    

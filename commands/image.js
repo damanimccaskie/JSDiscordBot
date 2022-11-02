@@ -46,7 +46,7 @@ module.exports = {
             let urls = Array.from(imgs).map(({ attribs: { src }}) => src);
 
             if (urls.length < 1) {
-                main.post(channel, "Couldn't find any images that match that description... srry");
+                main.post({ channel, msg: "Couldn't find any images that match that description... srry" });
                 console.log("No results");
                 return;
             }
@@ -54,7 +54,7 @@ module.exports = {
             //post image to chat
             const { MessageEmbed } = require("discord.js");
             const embed = new MessageEmbed().setColor("#33ffff").setImage(urls[Math.floor(Math.random() * urls.length)]);
-            main.post(channel, embed);
+            main.post({ channel, embeds: [embed] });
         });
     }
 }

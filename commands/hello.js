@@ -3,6 +3,6 @@ module.exports = {
     description: "hello command",
     execute({channel}) {
         const main = require("../helperFunctions.js")
-        main.post(channel, "Hello! :)");
+        main.post({ channel, msg: "Hello! :)" });
     }
 }

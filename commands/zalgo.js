@@ -5,6 +5,6 @@ module.exports = {
     execute: ({channel, args}) => {
         const main = require("../helperFunctions.js")
         args = main.removeFirstArg(args);
-        main.post(channel, Zalgo(args.join(" ")));
+        main.post({ channel, msg: Zalgo(args.join(" ")) });
     }
 }

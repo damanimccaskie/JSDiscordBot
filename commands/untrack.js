@@ -16,9 +16,9 @@ module.exports = {
             channels = channels.filter(item => item["Name"].toLowerCase() !== search.toLowerCase());
             if (originalCount > channels.length) {
                 storeTrack(channels);
-                main.post(channel, "Removed " + search);
-            } else main.post(channel, "Could not find: " + search);
-        } else main.post(channel, "You need to pass a channel name to remove");
+                main.post({ channel, msg: "Removed " + search });
+            } else main.post({ channel, msg: "Could not find: " + search });
+        } else main.post({ channel, msg: "You need to pass a channel name to remove" });
     }
 }
 

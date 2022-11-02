@@ -12,6 +12,6 @@ module.exports = {
             .setColor("#00ff00")
             .setImage(body.url);
 
-        main.post(channel, embed);
+        main.post({ channel, embeds: [embed] });
     }
 }

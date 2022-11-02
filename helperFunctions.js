@@ -1,5 +1,21 @@
-module.exports.post = function sendMsg(channel, msg) {
-	channel.send(msg);
+module.exports.post = function sendMsg({ channel, msg, embeds, files }) {
+	if (!msg && !embeds && !files) {
+		console.log("Must provide either a message, embed or a file to post to the channel");
+		return false;
+	}
+	
+	let sendObject = {};
+
+	if (msg)
+		sendObject.content = msg;
+
+	if (embeds)
+		sendObject.embeds = embeds;
+
+	if (files)
+		sendObject.files = files;
+	
+	channel.send(sendObject);
 }
 
 module.exports.removeFirstArg = function removeFirstArg(arr) {

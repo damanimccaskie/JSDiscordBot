@@ -3,12 +3,12 @@ module.exports = {
 	description: "help command",
 	execute({channel}) {
 		const main = require("../helperFunctions.js");
-		const version = "2022-10-30 08:12"
+		const version = "2022-11-01 08:45"
 
 		function displayHelp() {
 			const exampleEmbed = {
 				color: 0x0099ff,
-				title: 'SRBot Commands',
+				title: 'SRBot Commands - ' + version,
 				url: 'https://github.com/TheNotoriousMac/DiscordBot',
 				author: {
 					name: 'Suicide Race',
@@ -133,8 +133,7 @@ module.exports = {
 				},
 			};
 
-			main.post(channel, "Version: " + version);
-			main.post(channel, { embed: exampleEmbed });
+			main.post({ channel, embeds: [exampleEmbed] });
 
 		}
 		displayHelp();

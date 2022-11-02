@@ -17,12 +17,12 @@ module.exports = {
                         .trim();
         
         if (search.length < 1) {
-            main.post(channel, "Need to provide a search");
+            main.post({ channel, msg: "Need to provide a search" });
             return;
         }
 
         if (!global.rss_server) {
-            main.post(channel, "Dont know the rss server");
+            main.post({ channel, msg: "Dont know the rss server" });
             return;
         }
 
@@ -46,13 +46,13 @@ module.exports = {
             }
 
             if (response.statusCode != 200) {
-                main.post(channel, body);
+                main.post({ channel, msg: body });
                 return;
             }
 
             let channels = body;
             if (channels.length < 1) {
-                main.post(channel, "Didn't find any results for "+ search + " sorry");
+                main.post({ channel, msg: "Didn't find any results for "+ search + " sorry" });
                 return;
             }
 
@@ -66,7 +66,7 @@ module.exports = {
             }
             optionsEmbed.addField("Exit", "exit");
 
-            main.post(channel, optionsEmbed);
+            main.post({ channel, embeds: [optionsEmbed] });
 
             channel.awaitMessages(m => (m.content > 0 && m.content < channels.length) || m.content === 'exit', {
                 maxProcessed: 2,
@@ -82,7 +82,7 @@ module.exports = {
                         .setDescription("Adding " + channels[choice].name + " to tracking db")
                         .addField("Channel url", channels[choice].channel)
                         .addField("Feed url", channels[choice].feed);
-                    main.post(channel, addEmbed);
+                    main.post({ channel, embeds: [addEmbed] });
     
                     addToDb({
                         Name: channels[choice].name,
@@ -92,7 +92,7 @@ module.exports = {
                         DiscordChannel: channel.id // rmr which channel the youtuber was ask to track from
                     });   
                 }
-            }).catch(collected => main.post(channel, 'Guess you changed your mind'));
+            }).catch(collected => main.post({ channel, embeds: ['Guess you changed your mind'] }));
         });
     },
     getUpdates: (channels) => {
@@ -126,7 +126,7 @@ module.exports = {
                         return;
                     }
                     if (response.statusCode !== 200) {
-                        main.post(channel, body);
+                        main.post({ channel, msg: body });
                         return;
                     }
 
@@ -136,7 +136,7 @@ module.exports = {
 
                     if (!checked.includes(videos[0].id)) {
                         const channel = channels.get(record.DiscordChannel); // get the discord channel to post to
-                        main.post(channel, "https://www.youtube.com/watch?v=" + videos[0].id)
+                        main.post({ channel, msg: "https://www.youtube.com/watch?v=" + videos[0].id })
                         checked.push(videos[0].id);
                     }
                 });

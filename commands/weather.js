@@ -7,19 +7,19 @@ module.exports = {
         const main = require("../helperFunctions.js")
         args = main.removeFirstArg(args);
         if (args.length < 1) {
-            main.post(channel, "Please enter a location");
+            main.post({ channel, msg: "Please enter a location" });
             return;
         }
 
         weather.find({ search: args.join(" "), degreeType: "C" }, function (err, result) {
             if (err) {
-                main.post(channel, err);
+                main.post({ channel, msg: err.toString() });
                 return;
             }
 
             //If the place entered is invalid
             if (result.length === 0) {
-                main.post(channel, "**please enter a valid location**")
+                main.post({ channel, msg: "**please enter a valid location**" })
                 return;
             }
 
@@ -43,7 +43,7 @@ module.exports = {
                 .addField("Date", `${current.date}`, true)
 
             //Display when it's called
-            main.post(channel, embed)
+            main.post({ channel, embeds: [embed] })
 
         });
     }

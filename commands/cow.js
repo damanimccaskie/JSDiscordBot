@@ -13,6 +13,6 @@ module.exports = {
             integer: true
         };
         const random = rn(options);
-        main.post(channel, cows()[random], { code: '' });
+        main.post({ channel, msg: cows()[random] });
     }
 }

@@ -18,6 +18,6 @@ module.exports = {
             .setColor("#00ff00")
             .setImage(link);
 
-        main.post(channel, pepe);
+        main.post({ channel, embeds: [pepe] });
     }
 }

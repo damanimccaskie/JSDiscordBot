@@ -5,7 +5,7 @@ module.exports = {
         const main = require("../helperFunctions.js");
         args = main.removeFirstArg(args);
         if (args.length < 1) {
-            main.post(channel, 'You must provide text to space out!');
+            main.post({ channel, msg: 'You must provide text to space out!' });
             return;
         }
 
@@ -19,6 +19,6 @@ module.exports = {
             args = args.slice(1);
         }
 
-        main.post(channel, args.join(' '.repeat(amount / 2)).split('').join(' '.repeat(amount)));
+        main.post({ channel, msg: args.join(' '.repeat(amount / 2)).split('').join(' '.repeat(amount)) });
     }
 }

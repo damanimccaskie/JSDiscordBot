@@ -1,5 +1,5 @@
 const fs = require('fs')
-var Discord = require('discord.js');
+const { Client, Intents } = require('discord.js');
 var logger = require('winston');
 const main = require("./helperFunctions.js")
 
@@ -18,8 +18,16 @@ dotenv.config();
 
 global.rss_server = process.env.RSS_SERVER;
 
+const intentConsts = [
+	Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MEMBERS, Intents.FLAGS.GUILD_BANS, Intents.FLAGS.GUILD_EMOJIS_AND_STICKERS,
+	Intents.FLAGS.GUILD_INTEGRATIONS, Intents.FLAGS.GUILD_VOICE_STATES, Intents.FLAGS.GUILD_PRESENCES,
+	Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MESSAGE_REACTIONS, Intents.FLAGS.GUILD_MESSAGE_TYPING,
+	Intents.FLAGS.DIRECT_MESSAGES, Intents.FLAGS.MESSAGE_CONTENT, Intents.FLAGS.DIRECT_MESSAGE_REACTIONS,
+	Intents.FLAGS.DIRECT_MESSAGE_TYPING, Intents.FLAGS.GUILD_SCHEDULED_EVENTS
+];
+
 // Initialize Discord Bot
-let bot = new Discord.Client();
+let bot = new Client({ intents: intentConsts });
 bot.login(process.env.TOKEN);
 
 //dynamically load commands (js command files)
@@ -73,7 +81,7 @@ bot.on('message', function (message) {
 					bot.commands.get("music").execute({ channel, args, message });
 				}
 			if (!found)
-				main.post(channel, "Not sure I understand what it is you want...");
+				main.post({ channel, msg: "Not sure I understand what it is you want..." });
 		}
 	}
 });
