@@ -120,7 +120,7 @@ module.exports = {
                         "User-Agent": "Mozilla/5.0 (X11; Linux i586; rv:31.0) Gecko/20100101 Firefox/71.0"
                     }
                 };
-                request(options, (error, response, body) => {
+                request(options, async (error, response, body) => {
                     if (error) {
                         console.log(error);
                         return;
@@ -135,7 +135,7 @@ module.exports = {
                     if (videos.length < 1) return; // this usually doesnt happen, but if youtube breaks it will
 
                     if (!checked.includes(videos[0].id)) {
-                        const channel = channels.get(record.DiscordChannel); // get the discord channel to post to
+                        const channel = await channels.fetch(record.DiscordChannel); // get the discord channel to post to
                         main.post({ channel, msg: "https://www.youtube.com/watch?v=" + videos[0].id })
                         checked.push(videos[0].id);
                     }
