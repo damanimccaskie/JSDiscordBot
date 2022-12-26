@@ -9,7 +9,7 @@ COPY package.json .
 RUN npm install --omit=dev
 
 # install ffmpeg for discord voice and then clear the cache
-Run apk upgrade -U apk add ca-certificates ffmpeg rm -rf /var/cache/*
+RUN apk upgrade -U && apk add ca-certificates ffmpeg && rm -rf /var/cache/*
 
 ENV NODE_ENV=production
 

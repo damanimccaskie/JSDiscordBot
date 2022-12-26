@@ -22,11 +22,11 @@ module.exports = {
         }
 
         if (!global.rss_server) {
-            main.post({ channel, msg: "Dont know the rss server" });
+            main.post({ channel, msg: "Don't know the rss server" });
             return;
         }
 
-        main.post(channel, "Searching");
+        main.post({ channel, msg: "Searching" });
 
         const options = {
             url: global.rss_server + "/api/channels",
@@ -52,7 +52,7 @@ module.exports = {
 
             let channels = body;
             if (channels.length < 1) {
-                main.post({ channel, msg: "Didn't find any results for "+ search + " sorry" });
+                main.post({ channel, msg: "Didn't find any results for " + search + " sorry" });
                 return;
             }
 
@@ -60,28 +60,29 @@ module.exports = {
             const optionsEmbed = new MessageEmbed().setColor("#3158f9")
                 .setTitle("Choose a channel by entering a number");
 
+            let embedFields = [];
             for (let i = 0; i < channels.length && i < MAX_CHANNELS; i++) {
-                optionsEmbed.addField("Channel " + (i + 1).toString(), channels[i].name);
-                optionsEmbed.addField("Thumbnail", channels[i].thumbnail);
+                embedFields.push({ name: "Channel " + (i + 1).toString(), value: channels[i].name });
+                embedFields.push({ name: "Thumbnail", value: channels[i].thumbnail });
             }
-            optionsEmbed.addField("Exit", "exit");
+            embedFields.push({ name: "Exit", value: "exit" });
+            optionsEmbed.addFields(embedFields);
 
             main.post({ channel, embeds: [optionsEmbed] });
-
-            channel.awaitMessages(m => (m.content > 0 && m.content < channels.length) || m.content === 'exit', {
-                maxProcessed: 2,
-                time: 45000,
-                errors: ['time'] 
-            }).then(collected => {
-                let choice = parseInt(collected.first().content) - 1;
+            
+            const collector = channel.createMessageCollector({ filter: () => true, time: 45000 });
+            collector.on("collect", m => {
+                let choice = parseInt(m.content) - 1;
                 if (choice > -1 && choice < channels.length) {
-                    const addEmbed = new MessageEmbed().setColor("#f98331");
+                    const addEmbed = new MessageEmbed();
                     addEmbed
+                        .setColor("#f98331")
                         .setThumbnail(channels[choice].thumbnail)
                         .setTitle("Adding Channel to db")
                         .setDescription("Adding " + channels[choice].name + " to tracking db")
                         .addField("Channel url", channels[choice].channel)
                         .addField("Feed url", channels[choice].feed);
+                    // TODO: use addFields instead of ^^ addFields as it is deprecated
                     main.post({ channel, embeds: [addEmbed] });
     
                     addToDb({
@@ -92,7 +93,9 @@ module.exports = {
                         DiscordChannel: channel.id // rmr which channel the youtuber was ask to track from
                     });   
                 }
-            }).catch(collected => main.post({ channel, embeds: ['Guess you changed your mind'] }));
+            });
+
+            collector.on("end", collected => console.log(`Collected ${collected.size} items`));
         });
     },
     getUpdates: (channels) => {
@@ -132,7 +135,7 @@ module.exports = {
 
                     let videos = JSON.parse(body);
 
-                    if (videos.length < 1) return; // this usually doesnt happen, but if youtube breaks it will
+                    if (videos.length < 1) return; // this usually doesn't happen, but if youtube breaks it will
 
                     if (!checked.includes(videos[0].id)) {
                         const channel = await channels.fetch(record.DiscordChannel); // get the discord channel to post to

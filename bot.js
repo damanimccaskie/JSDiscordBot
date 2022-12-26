@@ -59,7 +59,7 @@ bot.on('ready', function (message, evt) {
 	setInterval(() => bot.commands.get("track").getUpdates(bot.channels), interval);
 });
 
-bot.on('message', function (message) {
+bot.on('messageCreate', function (message) {
 	// Our bot needs to know if it will execute a command
 	// It will listen for messages that will start with signal const (`!`)
 	if (message.author.username === "SR Bot") return; //ignore messages from self
