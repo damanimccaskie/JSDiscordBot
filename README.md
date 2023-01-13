@@ -1,10 +1,12 @@
-# DiscordBot
-The Discord Bot
+# DiscordBot 🤖
+The Discord Bot 🤖
 
 Bot Used Exclusively For The S-Race Discord Server, Will Be Available For More Soon!
 
 
-## General Commands
+This bot relies on the [youtube_rss](https://github.com/JChris246/youtube_rss) microservice for the track command, to retrieve the latest youtube video posted to a tracked channel. Add the url to an instance of the service to allow the command to work, in the .env file under `RSS_SERVER`.
+
+## General Commands 📟
 <ul>
 <li>!suicide - gives suicide hotline info</li>
 <li>!hello</li>
@@ -31,17 +33,17 @@ Bot Used Exclusively For The S-Race Discord Server, Will Be Available For More S
 <li>!pepe</li>
 <li>!urban - search urban dictionary</li>
 <li>!weather - get weather conditions in a specified location</li>
-<li>!track</li>
-<li>!untrack</li>
-<li>!lofi</li>
+<li>!track - get notifications of the latest videos from a youtube channels</li>
+<li>!untrack - stop tracking a previously tracked youtube channel</li>
+<li>!lofi - choose from a couple of lofi channels for music</li>
 </ul>
 
 
-## Music Commands
+## Music Commands (Currently inactive 🙃)
 <ul>
 <li>!play [arg] - arg can be a youtube link / id or a query</li>
 <li>!stop - stop all music (will also clear the queue)</li>
-<li>!skip - go to next song in list (if avaliable)</li>
+<li>!skip - go to next song in list (if available)</li>
 <li>!next - see skip</li>
 <li>!queue - view items in queue</li>
 <li>!back - go to previous song</li>
